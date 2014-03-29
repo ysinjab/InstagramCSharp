@@ -1,0 +1,5 @@
+D:\My Projects\InstgramCSharp\InstgramCSharp\bin\Debug\InstgramCSharp.dll
+D:\My Projects\InstgramCSharp\InstgramCSharp\bin\Debug\InstgramCSharp.pdb
+D:\My Projects\InstgramCSharp\InstgramCSharp\obj\Debug\InstgramCSharp.csprojResolveAssemblyReference.cache
+D:\My Projects\InstgramCSharp\InstgramCSharp\obj\Debug\InstgramCSharp.dll
+D:\My Projects\InstgramCSharp\InstgramCSharp\obj\Debug\InstgramCSharp.pdb
