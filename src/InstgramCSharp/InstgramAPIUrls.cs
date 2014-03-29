@@ -1,5 +1,4 @@
-﻿
-namespace InstgramCSharp
+﻿namespace InstgramCSharp
 {
     public static class InstgramAPIUrls
     {
@@ -11,6 +10,5 @@ namespace InstgramCSharp
         public static readonly string TagsEndpointsUrl = "https://api.instagram.com/v1/tags";
         public static readonly string LocationsEndpointsUrl = "https://api.instagram.com/v1/locations";
         public static readonly string GeographyEndpointsUrl = "https://api.instagram.com/v1/geographies";
-
     }
 }
