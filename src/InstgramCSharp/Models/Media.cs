@@ -17,13 +17,13 @@ namespace InstgramCSharp.Models
         public long Created_Time { get; set; }
         public string Link { get; set; }
 
-        public Images images { get; set; }
-        public Videos videos { get; set; }
-        public List<UserInPhoto> users_in_photo { get; set; }
+        public Images Images { get; set; }
+        public Videos Videos { get; set; }
+        public List<UserInPhoto> Users_In_Photo { get; set; }
         public Caption Caption { get; set; }
         public bool User_Has_Liked { get; set; }
-        public string id { get; set; }
-        public User user { get; set; }
+        public string Id { get; set; }
+        public User User { get; set; }
     }
 
 }

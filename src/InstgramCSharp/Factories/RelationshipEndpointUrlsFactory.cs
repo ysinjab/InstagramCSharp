@@ -6,26 +6,22 @@ namespace InstgramCSharp.Factories
     {
         public static string CreateUserFollowsUrl(ulong userId, string accessToken)
         {
-
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
             return BuildUserFollowsUrl(userId, InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
         }
         public static string CreateUserFollowedByUrl(ulong userId, string accessToken)
         {
-
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
             return BuildUserFollowedByUrl(userId, InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
 
         }
         public static string CreateRequestedByUrl(string accessToken)
         {
-
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
             return BuildRequestedByUrl(InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
         }
         public static string CreateRelationshipUrl(ulong userId, string accessToken)
         {
-
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
             return BuildRelationshipUrl(userId, InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
         }
@@ -33,7 +29,6 @@ namespace InstgramCSharp.Factories
         {
             var queryString = BuildPOSTRelationshipActionUrlQueryString(accessToken, relationshipAction);
             return BuildRelationshipUrl(userId, InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
-
         }
         private static string BuildRelationshipEndpointUrlsQueryString(string accessToken)
         {

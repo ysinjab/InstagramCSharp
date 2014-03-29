@@ -1,4 +1,4 @@
-﻿using InstgramCSharp.Enums;
+﻿﻿using InstgramCSharp.Enums;
 using InstgramCSharp.Factories;
 using System;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace InstgramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId,accessToken));
+                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, accessToken));
                 return response;
             }
         }
@@ -83,7 +83,7 @@ namespace InstgramCSharp.Endpoints
             }
         }
 
-    
+
 
     }
 }
