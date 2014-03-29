@@ -23,7 +23,7 @@ namespace InstgramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(GeographyEndpointUrlsFactory.CreateRecenGeographyMediaUrl(geoId,clientId, count, minId));
+                var response = await httpClient.GetStringAsync(GeographyEndpointUrlsFactory.CreateRecentGeographyMediaUrl(geoId,clientId, count, minId));
                 return response;
             }
         }

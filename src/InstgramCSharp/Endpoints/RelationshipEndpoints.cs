@@ -77,8 +77,8 @@ namespace InstgramCSharp.Endpoints
         public static async Task<HttpResponseMessage> PostRelationshipActionAsync(ulong userId, string accessToken, RelationshipActions relationshipAction)
         {
             using (HttpClient httpClient = new HttpClient())
-            {                
-                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRlationshipActionUrl(userId, accessToken, relationshipAction), null);
+            {
+                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, accessToken, relationshipAction), null);
                 return response;
             }
         }

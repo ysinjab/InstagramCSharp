@@ -29,9 +29,9 @@ namespace InstgramCSharp.Factories
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
             return BuildRelationshipUrl(userId, InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
         }
-        public static string CreatePOSTRlationshipActionUrl(ulong userId, string accessToken, RelationshipActions relationshipAction)
+        public static string CreatePOSTRelationshipActionUrl(ulong userId, string accessToken, RelationshipActions relationshipAction)
         {
-            var queryString = BuildPOSTRlationshipActionUrlQueryString(accessToken, relationshipAction);
+            var queryString = BuildPOSTRelationshipActionUrlQueryString(accessToken, relationshipAction);
             return BuildRelationshipUrl(userId, InstgramAPIUrls.RelationshipsEndpointsUrl, queryString);
 
         }
@@ -41,7 +41,7 @@ namespace InstgramCSharp.Factories
             queryString["access_token"] = accessToken;
             return queryString.ToString();
         }
-        private static string BuildPOSTRlationshipActionUrlQueryString(string accessToken, RelationshipActions relationshipAction)
+        private static string BuildPOSTRelationshipActionUrlQueryString(string accessToken, RelationshipActions relationshipAction)
         {
             var queryString = HttpUtility.ParseQueryString("");
             queryString["access_token"] = accessToken;

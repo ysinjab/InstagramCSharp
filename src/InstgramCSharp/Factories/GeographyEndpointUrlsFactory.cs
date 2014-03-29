@@ -4,7 +4,7 @@ namespace InstgramCSharp.Factories
 {
     public class GeographyEndpointUrlsFactory
     {
-        public static string CreateRecenGeographyMediaUrl(string geoId, string clientId, int count = 0, string minId = null)
+        public static string CreateRecentGeographyMediaUrl(string geoId, string clientId, int count = 0, string minId = null)
         {
             var queryString = BuildGeographyUrlQueryString(clientId, count, minId);
             return BuildRecentGeographyMediaUrl(geoId, InstgramAPIUrls.GeographyEndpointsUrl, queryString);
