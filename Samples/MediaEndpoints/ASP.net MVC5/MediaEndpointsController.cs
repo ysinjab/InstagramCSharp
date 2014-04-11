@@ -9,10 +9,10 @@ namespace InstagramCSharp_WebSample.Controllers
     {
         public async Task<object> GetPopularMediaAsync()
         {
-            string ClientId = "YOUR_CLIENT_ID";
-            string AccessToken = "A_VALID_ACCESS_TOKEN";
+            string clientId = "YOUR_CLIENT_ID";
+            string accessToken = "A_VALID_ACCESS_TOKEN";
 
-            InstagramClient client = new InstagramClient(ClientId, AccessToken);
+            InstagramClient client = new InstagramClient(clientId, accessToken);
 
             var popularMedia = await client.MediaEndpoints.GetPopularMediaAsync();
 
