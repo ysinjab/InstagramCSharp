@@ -1,27 +1,27 @@
 ﻿﻿using InstagramCSharp.Enums;
 using InstagramCSharp.Factories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InstagramCSharp.Endpoints
 {
-    public static class RelationshipEndpoints
+    public class RelationshipEndpoints
     {
+        private string accessToken;
+        public RelationshipEndpoints(string accessToken)
+        {
+            this.accessToken = accessToken;
+        }
         /// <summary>
         /// Get information about a relationship to another user.
         /// Required scope: relationships.
         /// </summary>
-        /// <param name="accessToken">A valid access token.</param>
         /// <returns>JSON result string.</returns>
-        public static async Task<string> GetRelationshipInfoAsync(ulong userId, string accessToken)
+        public async Task<string> GetRelationshipInfoAsync(ulong userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, accessToken));
+                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, this.accessToken));
                 return response;
             }
         }
@@ -29,13 +29,12 @@ namespace InstagramCSharp.Endpoints
         /// List the users who have requested this user's permission to follow.
         /// Required scope: relationships.
         /// </summary>
-        /// <param name="accessToken">A valid access token.</param>
         /// <returns>JSON result string.</returns>
-        public static async Task<string> GetRequestedByAsync(string accessToken)
+        public async Task<string> GetRequestedByAsync()
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(accessToken));
+                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(this.accessToken));
                 return response;
             }
         }
@@ -43,13 +42,12 @@ namespace InstagramCSharp.Endpoints
         /// Get the list of users this user follows.
         /// Required scope: relationships.
         /// </summary>
-        /// <param name="accessToken">A valid access token.</param>
         /// <returns>JSON result string.</returns>
-        public static async Task<string> GetFollowsAsync(ulong userId, string accessToken)
+        public async Task<string> GetFollowsAsync(ulong userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, accessToken));
+                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, this.accessToken));
                 return response;
             }
         }
@@ -57,13 +55,12 @@ namespace InstagramCSharp.Endpoints
         /// Get the list of users this user is followed by.
         /// Required scope: relationships.
         /// </summary>
-        /// <param name="accessToken">A valid access token.</param>
         /// <returns>JSON result string.</returns>
-        public static async Task<string> GetFollowedByAsync(ulong userId, string accessToken)
+        public async Task<string> GetFollowedByAsync(ulong userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, accessToken));
+                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, this.accessToken));
                 return response;
             }
         }
@@ -71,19 +68,15 @@ namespace InstagramCSharp.Endpoints
         /// Modify the relationship between the current user and the target user.
         /// Required scope: relationships.
         /// </summary>
-        /// <param name="accessToken">A valid access token.</param>
         /// <param name="relationshipAction">One of follow/unfollow/block/unblock/approve/deny.</param>
         /// <returns>HttpResponseMessage Object.</returns>
-        public static async Task<HttpResponseMessage> PostRelationshipActionAsync(ulong userId, string accessToken, RelationshipActions relationshipAction)
+        public async Task<HttpResponseMessage> PostRelationshipActionAsync(ulong userId, RelationshipActions relationshipAction)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, accessToken, relationshipAction), null);
+                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, this.accessToken, relationshipAction), null);
                 return response;
             }
         }
-
-
-
     }
 }

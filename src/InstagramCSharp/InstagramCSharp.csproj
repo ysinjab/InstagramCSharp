@@ -60,13 +60,14 @@
     <Compile Include="Factories\RelationshipEndpointUrlsFactory.cs" />
     <Compile Include="Factories\TagEndpointsUrlsFactory.cs" />
     <Compile Include="Factories\UserEndpointUrlsFactory.cs" />
+    <Compile Include="InstagramClient.cs" />
     <Compile Include="InstgramAPIUrls.cs" />
     <Compile Include="Models\AuthUser.cs" />
     <Compile Include="Models\Caption.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Comments.cs" />
     <Compile Include="Models\Counts.cs" />
-    <Compile Include="Models\Feed.cs" />
+    <Compile Include="Models\MeidaFeed.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Likes.cs" />
     <Compile Include="Models\Location.cs" />
@@ -76,7 +77,10 @@
     <Compile Include="Models\Models.cs" />
     <Compile Include="Models\Pagination.cs" />
     <Compile Include="Models\Position.cs" />
+    <Compile Include="Models\RealTimeUpdate.cs" />
     <Compile Include="Models\StandardResolution.cs" />
+    <Compile Include="Models\Subscription.cs" />
+    <Compile Include="Models\SubscriptionsFeed.cs" />
     <Compile Include="Models\Thumbnail.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserInPhoto.cs" />

@@ -1,15 +1,16 @@
 ﻿using InstagramCSharp.Factories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InstagramCSharp.Endpoints
 {
-    public static class GeographyEndpoints
+    public class GeographyEndpoints
     {
+        private string clientId;
+        public GeographyEndpoints(string clientId)
+        {
+            this.clientId = clientId;
+        }
         /// <summary>
         /// Get recent media from a geography subscription that you created. 
         /// Note: You can only access Geographies that were explicitly created by your OAuth client.
@@ -19,11 +20,11 @@ namespace InstagramCSharp.Endpoints
         /// <param name="count">Max number of media to return.</param>
         /// <param name="minId">Return media before this min_id.</param>
         /// <returns>JSON result string.</returns>
-        public static async Task<string> GetUserBasicInfoAsync(string geoId, string clientId, int count = 0, string minId = null)
+        public async Task<string> GetUserBasicInfoAsync(string geoId, int count = 0, string minId = null)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(GeographyEndpointUrlsFactory.CreateRecentGeographyMediaUrl(geoId,clientId, count, minId));
+                var response = await httpClient.GetStringAsync(GeographyEndpointUrlsFactory.CreateRecentGeographyMediaUrl(geoId, this.clientId, count, minId));
                 return response;
             }
         }
