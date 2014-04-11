@@ -2,7 +2,7 @@
 
 namespace InstagramCSharp.Models
 {
-    public class MeidaFeed
+    public class MediaFeed
     {
         public Pagination Pagination { get; set; }
         public Meta Meta { get; set; }
