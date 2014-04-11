@@ -16,7 +16,7 @@ namespace InstagramCSharp_WebSample.Controllers
 
             var popularMedia = await client.MediaEndpoints.GetPopularMediaAsync();
 
-            //I user Json.NET for oarsing the result
+            //I use Json.NET for parsing the result
             var popularMediaJson = JsonConvert.DeserializeObject(popularMedia);
 
             //You can deserialize json result to one of the models in InstagramCSharp or to your custom model

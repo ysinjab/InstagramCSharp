@@ -16,7 +16,7 @@ namespace InstagramCSharp_WebSample.Controllers
 
             var recentTaggedMedia = await client.TagEndpoints.GetRecentTaggedMediaAsync(tag);
 
-            //I user Json.NET for oarsing the result
+            //I use Json.NET for parsing the result
             var recentTaggedMediaJson = JsonConvert.DeserializeObject(recentTaggedMedia);
 
             //You can deserialize json result to one of the models in InstagramCSharp or to your custom model
