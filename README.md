@@ -1,3 +1,4 @@
-InstgramCSharp
-==============
-InstgramCSharp is a light wrapper around the Instagram API.
+InstagramCSharp
+===============
+
+InstagramCSharp is a light wrapper around the Instagram API.
