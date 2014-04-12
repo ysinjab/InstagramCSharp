@@ -20,7 +20,7 @@ namespace InstagramCSharp_WebSample.Controllers
             var recentTaggedMediaJson = JsonConvert.DeserializeObject(recentTaggedMedia);
 
             //You can deserialize json result to one of the models in InstagramCSharp or to your custom model
-            //var recentTaggedMediaJson = JsonConvert.DeserializeObject<MediaFeed>(popularMedia);
+            //var recentTaggedMediaJson = JsonConvert.DeserializeObject<MediaFeed>(recentTaggedMedia);
 
             return recentTaggedMediaJson;
         }   
