@@ -25,8 +25,18 @@ namespace InstagramCSharp_WebSample.Controllers
             string clientSecret = "YOUR_CLIENT_SECRET";
             string redirectUri = "YOUR_REDIRECT_URL";
 
-            var result =await InstagramOAuth.AuthenticateUser(clientId, clientSecret, "authorization_code", redirectUri, code);
-
+             var responseMessage = await InstagramOAuth.AuthenticateUser(InstagramConfiguration.InstagramClientId, InstagramConfiguration.InstagramClientSecret, "authorization_code", InstagramConfiguration.InstagramRedirectUri, code);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    
+                    AuthUser result = (AuthUser)JsonConvert.DeserializeObject(responseMessage.Content.ReadAsStringAsync().Result, typeof(AuthUser));
+                     //access and use access_token 
+                     // result.access_token;
+                }
+                else
+                {
+                    //TODO: throw exception
+                }
             //TO-DO  : If SUCCESS handle the response , else throw an exception 
 
             return View();
