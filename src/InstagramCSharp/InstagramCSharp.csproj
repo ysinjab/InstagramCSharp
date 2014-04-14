@@ -55,13 +55,13 @@
     <Compile Include="Factories\LikeEndpointsUrlsFactory.cs" />
     <Compile Include="Factories\LocationEndpointsUrlsFactory.cs" />
     <Compile Include="Factories\MediaEndpointsUrlsFactory.cs.cs" />
-    <Compile Include="Factories\OAuthInstgramUrlsFactory.cs" />
+    <Compile Include="Factories\OAuthInstagramUrlsFactory.cs" />
     <Compile Include="Factories\RealTimeSubscriptionsUrlsFactory.cs" />
     <Compile Include="Factories\RelationshipEndpointUrlsFactory.cs" />
     <Compile Include="Factories\TagEndpointsUrlsFactory.cs" />
     <Compile Include="Factories\UserEndpointUrlsFactory.cs" />
     <Compile Include="InstagramClient.cs" />
-    <Compile Include="InstgramAPIUrls.cs" />
+    <Compile Include="InstagramAPIUrls.cs" />
     <Compile Include="Models\AuthUser.cs" />
     <Compile Include="Models\Caption.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -85,9 +85,9 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserInPhoto.cs" />
     <Compile Include="Models\Videos.cs" />
-    <Compile Include="OAuth\InstgramOAuth.cs" />
+    <Compile Include="OAuth\InstagramOAuth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RealTime\InstgramRealTime.cs" />
+    <Compile Include="RealTime\InstagramRealTime.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
