@@ -1,5 +1,8 @@
 ﻿using InstagramCSharp.Enums;
+using InstagramCSharp.Models;
 using InstagramCSharp.OAuth;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -25,20 +28,16 @@ namespace InstagramCSharp_WebSample.Controllers
             string clientSecret = "YOUR_CLIENT_SECRET";
             string redirectUri = "YOUR_REDIRECT_URL";
 
-             var responseMessage = await InstagramOAuth.AuthenticateUser(InstagramConfiguration.InstagramClientId, InstagramConfiguration.InstagramClientSecret, "authorization_code", InstagramConfiguration.InstagramRedirectUri, code);
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    
-                    AuthUser result = (AuthUser)JsonConvert.DeserializeObject(responseMessage.Content.ReadAsStringAsync().Result, typeof(AuthUser));
-                     //access and use access_token 
-                     // result.access_token;
-                }
-                else
-                {
-                    //TODO: throw exception
-                }
-            //TO-DO  : If SUCCESS handle the response , else throw an exception 
-
+            var result =await InstagramOAuth.AuthenticateUser(clientId, clientSecret, "authorization_code", redirectUri, code);
+            if (result.IsSuccessStatusCode)
+            {
+                string responseContent=result.Content.ReadAsStringAsync().Result;
+                AuthUser authenticatedUser = JsonConvert.DeserializeObject<AuthUser>(responseContent);                
+            }
+            else
+            {
+                throw new Exception();
+            }
             return View();
         }
     }
