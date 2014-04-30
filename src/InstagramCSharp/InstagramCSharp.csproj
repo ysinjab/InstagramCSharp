@@ -78,6 +78,7 @@
     <Compile Include="Models\Pagination.cs" />
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\RealTimeUpdate.cs" />
+    <Compile Include="Models\RealTimeUpdateData.cs" />
     <Compile Include="Models\StandardResolution.cs" />
     <Compile Include="Models\Subscription.cs" />
     <Compile Include="Models\SubscriptionsFeed.cs" />

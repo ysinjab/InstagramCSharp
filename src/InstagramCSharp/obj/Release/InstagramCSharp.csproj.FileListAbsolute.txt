@@ -1,0 +1,4 @@
+D:\My Projects\InstagramCSharp\src\InstagramCSharp\bin\Release\InstagramCSharp.dll
+D:\My Projects\InstagramCSharp\src\InstagramCSharp\bin\Release\InstagramCSharp.pdb
+D:\My Projects\InstagramCSharp\src\InstagramCSharp\obj\Release\InstagramCSharp.dll
+D:\My Projects\InstagramCSharp\src\InstagramCSharp\obj\Release\InstagramCSharp.pdb

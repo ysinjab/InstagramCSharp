@@ -3,7 +3,7 @@ namespace InstagramCSharp.Models
 {    
     public class User
     {
-        public string Id { get; set; }
+        public ulong Id { get; set; }
         public string Username { get; set; }
         public string Full_Name { get; set; }
         public string Profile_Picture { get; set; }

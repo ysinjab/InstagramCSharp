@@ -8,7 +8,7 @@ namespace InstagramCSharp.Factories
         public static string CreateGETAllSubscriptionsUrl(string clientId, string clientSecret)
         {
             var queryString = BuildGETAllSubscriptionsUrlQueryString(clientId, clientSecret);
-            return BuildDELETESubscriptionsUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
+            return BuildRealTimeSubscriptionUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
         }
 
         private static object BuildGETAllSubscriptionsUrlQueryString(string clientId, string clientSecret)
@@ -21,13 +21,13 @@ namespace InstagramCSharp.Factories
         public static string CreateDELETESubscriptionsUrl(string clientId, string clientSecret, ulong id)
         {
             var queryString = BuildDELETESubscriptionsUrlQueryString(clientId, clientSecret, id);
-            return BuildDELETESubscriptionsUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
+            return BuildRealTimeSubscriptionUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
         }
 
         public static string CreateDELETESubscriptionsUrl(string clientId, string clientSecret, RealTimeObjects obj)
         {
             var queryString = BuildDELETESubscriptionsUrlQueryString(clientId, clientSecret, obj);
-            return BuildDELETESubscriptionsUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
+            return BuildRealTimeSubscriptionUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
         }
 
         private static object BuildDELETESubscriptionsUrlQueryString(string clientId, string clientSecret, ulong id)
@@ -65,7 +65,7 @@ namespace InstagramCSharp.Factories
             }
             return queryString.ToString();
         }
-        private static string BuildDELETESubscriptionsUrl(string url, object queryString)
+        private static string BuildRealTimeSubscriptionUrl(string url, object queryString)
         {
             return url + "?" + queryString;
         }

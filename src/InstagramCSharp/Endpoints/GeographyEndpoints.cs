@@ -20,7 +20,7 @@ namespace InstagramCSharp.Endpoints
         /// <param name="count">Max number of media to return.</param>
         /// <param name="minId">Return media before this min_id.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetUserBasicInfoAsync(string geoId, int count = 0, string minId = null)
+        public async Task<string> GetRecentGeographyMediaAsync(ulong geoId, int count = 0, string minId = null)
         {
             using (HttpClient httpClient = new HttpClient())
             {
