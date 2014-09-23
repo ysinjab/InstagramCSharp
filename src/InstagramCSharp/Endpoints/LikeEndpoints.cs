@@ -17,7 +17,7 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: likes
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetMediaCommentsAsync(string mediaId)
+        public async Task<string> GetMediaLikesAsync(string mediaId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -31,7 +31,7 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: likes
         /// </summary>
         /// <returns>HttpResponseMessage Object.</returns>
-        public async Task<HttpResponseMessage> PostMediaCommentAsync(string mediaId)
+        public async Task<HttpResponseMessage> PosLikeAsync(string mediaId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -46,7 +46,7 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: likes
         /// </summary>
         /// <returns>HttpResponseMessage Object.</returns>
-        public async Task<HttpResponseMessage> DeleteMediaCommentAsync(string mediaId)
+        public async Task<HttpResponseMessage> DeleteLikeAsync(string mediaId)
         {
             using (HttpClient httpClient = new HttpClient())
             {

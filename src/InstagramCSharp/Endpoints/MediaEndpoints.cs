@@ -10,17 +10,34 @@ namespace InstagramCSharp.Endpoints
         public MediaEndpoints(string accessToken)
         {
             this.accessToken = accessToken;
-        }
+        }        
         /// <summary>
         /// Get information about a media object. The returned type key will allow you to differentiate between image and video media. 
         /// Note: if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly tells you whether the current user has liked this media item.
         /// </summary>
+        /// <param name="mediaId">Media Id.</param>
         /// <returns>JSON result string.</returns>
         public async Task<string> GetMediaInfoAsync(string mediaId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 var response = await httpClient.GetStringAsync(MediaEndpointsUrlsFactory.CreateMediaInfoUrl(mediaId, this.accessToken));
+                return response;
+            }
+        }
+        /// <summary>
+        /// This endpoint returns the same response as GET /media/media-id.
+        /// A media object's shortcode can be found in its shortlink URL.
+        /// An example shortlink is http://instagram.com/p/D/
+        /// Its corresponding shortcode is D.
+        /// </summary>
+        /// <param name="shortCode">shortCode</param>
+        /// <returns>JSON result string.</returns>
+        public async Task<string> GetMediaInfoByShortCodeAsync(string shortCode)
+        {
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetStringAsync(MediaEndpointsUrlsFactory.CreateShortCodeMediaInfoUrl(shortCode, this.accessToken));
                 return response;
             }
         }

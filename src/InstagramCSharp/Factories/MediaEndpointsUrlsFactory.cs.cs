@@ -14,12 +14,17 @@ namespace InstagramCSharp.Factories
             var queryString = BuildMediaEndpointsUrlsQueryString(accessToken);
             return BuildMediaInfoUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl, queryString);
         }
+        public static string CreateShortCodeMediaInfoUrl(string shortCode, string accessToken)
+        {
+            var queryString = BuildMediaEndpointsUrlsQueryString(accessToken);
+            return BuildShortCodeMediaInfoUrl(shortCode, InstagramAPIUrls.MediaEndpointsUrl, queryString);
+        }
         public static string CreatePopularMediaUrl(string accessToken)
         {
             var queryString = BuildMediaEndpointsUrlsQueryString(accessToken);
             return BuildPopularMediaUrl(InstagramAPIUrls.MediaEndpointsUrl, queryString);
         }
-
+   
 
         private static string BuildMediaEndpointsUrlsQueryString(string accessToken, long minTimestamp = 0, long maxTimestamp = 0, string distance = null, double lat = 0, double lng = 0)
         {
@@ -52,8 +57,11 @@ namespace InstagramCSharp.Factories
             url = string.Format(url + "/{0}", mediaId);
             return url + "?" + queryString;
         }
-
-
+        private static string BuildShortCodeMediaInfoUrl(string shortCode, string url, string queryString)
+        {
+            url = string.Format(url + "/shortcode/{0}", shortCode);
+            return url + "?" + queryString;
+        }
         private static string BuildSearchMediaUrl(string url, string queryString)
         {
             url = url + "/search";
