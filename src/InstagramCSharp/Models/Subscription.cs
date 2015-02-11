@@ -3,7 +3,7 @@ namespace InstagramCSharp.Models
 {
     public class Subscription
     {
-        public ulong Id { get; set; }
+        public long Id { get; set; }
         public string Type { get; set; }
         public string @object { get; set; }
         public string Aspect { get; set; }

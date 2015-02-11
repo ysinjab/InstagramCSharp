@@ -18,7 +18,7 @@ namespace InstagramCSharp.Factories
             queryString["client_secret"] = clientSecret;
             return queryString.ToString();
         }
-        public static string CreateDELETESubscriptionsUrl(string clientId, string clientSecret, ulong id)
+        public static string CreateDELETESubscriptionsUrl(string clientId, string clientSecret, long id)
         {
             var queryString = BuildDELETESubscriptionsUrlQueryString(clientId, clientSecret, id);
             return BuildRealTimeSubscriptionUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
@@ -30,7 +30,7 @@ namespace InstagramCSharp.Factories
             return BuildRealTimeSubscriptionUrl(InstagramAPIUrls.RealTimeSubscriptionsUrl, queryString);
         }
 
-        private static object BuildDELETESubscriptionsUrlQueryString(string clientId, string clientSecret, ulong id)
+        private static object BuildDELETESubscriptionsUrlQueryString(string clientId, string clientSecret, long id)
         {
             var queryString = HttpUtility.ParseQueryString("");
             queryString["client_id"] = clientId;

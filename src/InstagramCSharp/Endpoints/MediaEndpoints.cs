@@ -1,4 +1,5 @@
-﻿using InstagramCSharp.Factories;
+﻿using InstagramCSharp.Exceptions;
+using InstagramCSharp.Factories;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,8 +22,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(MediaEndpointsUrlsFactory.CreateMediaInfoUrl(mediaId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(MediaEndpointsUrlsFactory.CreateMediaInfoUrl(mediaId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -32,13 +41,20 @@ namespace InstagramCSharp.Endpoints
         /// Its corresponding shortcode is D.
         /// </summary>
         /// <param name="shortCode">shortCode</param>
-        /// <returns>JSON result string.</returns>
         public async Task<string> GetMediaInfoByShortCodeAsync(string shortCode)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(MediaEndpointsUrlsFactory.CreateShortCodeMediaInfoUrl(shortCode, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(MediaEndpointsUrlsFactory.CreateShortCodeMediaInfoUrl(shortCode, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -49,8 +65,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(MediaEndpointsUrlsFactory.CreatePopularMediaUrl(this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(MediaEndpointsUrlsFactory.CreatePopularMediaUrl(this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -67,8 +91,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(MediaEndpointsUrlsFactory.CreateSearchMediaUrl(this.accessToken, minTimestamp, maxTimestamp, distance, lat, lng));
-                return response;
+                var response = await httpClient.GetAsync(MediaEndpointsUrlsFactory.CreateSearchMediaUrl(this.accessToken, minTimestamp, maxTimestamp, distance, lat, lng));
+                string responseContent = await response.Content.ReadAsStringAsync(); 
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
 
         }

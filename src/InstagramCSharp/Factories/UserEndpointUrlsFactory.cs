@@ -4,7 +4,7 @@ namespace InstagramCSharp.Factories
 {
     public static class UserEndpointUrlsFactory
     {
-        public static string CreateUserBasicInfoUrl(ulong userId, string accessToken)
+        public static string CreateUserBasicInfoUrl(long userId, string accessToken)
         {
             var queryString = BuildUserEndpointUrlQueryString(accessToken);
             return BuildUserBasicInfoeUrl(userId, InstagramAPIUrls.UserEndpointsUrl, queryString);
@@ -14,12 +14,12 @@ namespace InstagramCSharp.Factories
             var queryString = BuildUserEndpointUrlQueryString(accessToken, null, count, minId, maxId);
             return BuildUserFeedUrl(InstagramAPIUrls.UserEndpointsUrl, queryString);
         }
-        public static string CreateUserRecentMediaByAccessTokenUrl(ulong userId, string accessToken, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public static string CreateUserRecentMediaByAccessTokenUrl(long userId, string accessToken, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
         {
             var queryString = BuildUserEndpointUrlQueryString(accessToken, null, count, minId, maxId, minTimestamp, maxTimestamp);
             return BuildUserRecentMediaByAccessTokenUrl(userId, InstagramAPIUrls.UserEndpointsUrl, queryString);
         }
-        public static string CreateUserRecentMediaByClientIdUrl(ulong userId, string clientId, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public static string CreateUserRecentMediaByClientIdUrl(long userId, string clientId, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
         {
             var queryString = BuildUserEndpointUrlQueryString(null, clientId, count, minId, maxId, minTimestamp, maxTimestamp);
             return BuildUserRecentMediaByClientIdUrl(userId, InstagramAPIUrls.UserEndpointsUrl, queryString);
@@ -76,7 +76,7 @@ namespace InstagramCSharp.Factories
             return queryString.ToString();
 
         }
-        private static string BuildUserBasicInfoeUrl(ulong userId, string url, string queryString)
+        private static string BuildUserBasicInfoeUrl(long userId, string url, string queryString)
         {
             url = string.Format(url + "/{0}", userId);
             return url + "?" + queryString;
@@ -86,12 +86,12 @@ namespace InstagramCSharp.Factories
             url = url + "/self/feed";
             return url + "?" + queryString;
         }
-        private static string BuildUserRecentMediaByAccessTokenUrl(ulong userId, string url, string queryString)
+        private static string BuildUserRecentMediaByAccessTokenUrl(long userId, string url, string queryString)
         {
             url = string.Format(url + "/{0}/media/recent", userId);
             return url + "?" + queryString;
         }
-        private static string BuildUserRecentMediaByClientIdUrl(ulong userId, string url, string queryString)
+        private static string BuildUserRecentMediaByClientIdUrl(long userId, string url, string queryString)
         {
             url = string.Format(url + "/{0}/media/recent", userId);
             return url + "?" + queryString;

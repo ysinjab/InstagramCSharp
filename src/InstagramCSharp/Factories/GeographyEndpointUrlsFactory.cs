@@ -4,12 +4,12 @@ namespace InstagramCSharp.Factories
 {
     public class GeographyEndpointUrlsFactory
     {
-        public static string CreateRecentGeographyMediaUrl(ulong geoId, string clientId, int count = 0, string minId = null)
+        public static string CreateRecentGeographyMediaUrl(long geoId, string clientId, int count = 0, string minId = null)
         {
             var queryString = BuildGeographyUrlQueryString(clientId, count, minId);
             return BuildRecentGeographyMediaUrl(geoId, InstagramAPIUrls.GeographyEndpointsUrl, queryString);
         }
-        private static string BuildRecentGeographyMediaUrl(ulong geoId, string url, object queryString)
+        private static string BuildRecentGeographyMediaUrl(long geoId, string url, object queryString)
         {
             url = string.Format(url + "/{0}/media/recent", geoId);
             return url + "?" + queryString;

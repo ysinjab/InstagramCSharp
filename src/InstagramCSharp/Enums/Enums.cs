@@ -7,7 +7,7 @@ namespace InstagramCSharp.Enums
     }
     public enum RelationshipActions
     {
-        Follow=1,Unfollow=2,Block=3,Unblock=4,Approve=5,Deny=6
+        Follow=1,Unfollow=2,Block=3,Unblock=4,Approve=5,Ignore=6
     }
     public enum RealTimeAspects 
     { 

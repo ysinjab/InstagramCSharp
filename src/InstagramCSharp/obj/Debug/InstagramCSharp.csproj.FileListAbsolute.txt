@@ -6,3 +6,8 @@ D:\My Projects\InstagramCSharp\src\InstagramCSharp\bin\Debug\InstagramCSharp.dll
 D:\My Projects\InstagramCSharp\src\InstagramCSharp\bin\Debug\InstagramCSharp.pdb
 D:\My Projects\InstagramCSharp\src\InstagramCSharp\obj\Debug\InstagramCSharp.dll
 D:\My Projects\InstagramCSharp\src\InstagramCSharp\obj\Debug\InstagramCSharp.pdb
+C:\MyNugets\InstagramCSharp\InstagramCSharp\src\InstagramCSharp\bin\Debug\InstagramCSharp.dll
+C:\MyNugets\InstagramCSharp\InstagramCSharp\src\InstagramCSharp\bin\Debug\InstagramCSharp.pdb
+C:\MyNugets\InstagramCSharp\InstagramCSharp\src\InstagramCSharp\obj\Debug\InstagramCSharp.csprojResolveAssemblyReference.cache
+C:\MyNugets\InstagramCSharp\InstagramCSharp\src\InstagramCSharp\obj\Debug\InstagramCSharp.dll
+C:\MyNugets\InstagramCSharp\InstagramCSharp\src\InstagramCSharp\obj\Debug\InstagramCSharp.pdb

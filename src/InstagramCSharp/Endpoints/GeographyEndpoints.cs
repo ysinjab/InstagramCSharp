@@ -1,4 +1,5 @@
-﻿using InstagramCSharp.Factories;
+﻿using InstagramCSharp.Exceptions;
+using InstagramCSharp.Factories;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -20,12 +21,20 @@ namespace InstagramCSharp.Endpoints
         /// <param name="count">Max number of media to return.</param>
         /// <param name="minId">Return media before this min_id.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetRecentGeographyMediaAsync(ulong geoId, int count = 0, string minId = null)
+        public async Task<string> GetRecentGeographyMediaAsync(long geoId, int count = 0, string minId = null)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(GeographyEndpointUrlsFactory.CreateRecentGeographyMediaUrl(geoId, this.clientId, count, minId));
-                return response;
+                var response = await httpClient.GetAsync(GeographyEndpointUrlsFactory.CreateRecentGeographyMediaUrl(geoId, this.clientId, count, minId));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
     }

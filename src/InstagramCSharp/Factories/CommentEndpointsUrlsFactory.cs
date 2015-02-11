@@ -13,7 +13,7 @@ namespace InstagramCSharp.Factories
         {
             return BuildCommentUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl);
         }
-        public static string CreateDELETECommentUrl(string mediaId, ulong commentId, string accessToken)
+        public static string CreateDELETECommentUrl(string mediaId, string commentId, string accessToken)
         {
             var queryString = BuildCommentEndpointsUrlQueryString(accessToken);
             return BuildCommentUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl, queryString, commentId);
@@ -24,14 +24,14 @@ namespace InstagramCSharp.Factories
             queryString["access_token"] = accessToken;
             return queryString.ToString();
         }
-        private static string BuildCommentUrl(string mediaId, string url, string queryString = null, ulong commentId = 0)
+        private static string BuildCommentUrl(string mediaId, string url, string queryString = null, string commentId =null)
         {
             if (queryString==null)
             {
                 url = string.Format(url + "/{0}/comments", mediaId);
                 return url;
             }
-            if (commentId != 0)
+            if (commentId != null)
             {
                 url = string.Format(url + "/{0}/comments/{1}", mediaId, commentId);
                 return url + "?" + queryString;

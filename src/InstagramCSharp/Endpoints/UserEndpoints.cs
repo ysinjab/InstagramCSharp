@@ -1,4 +1,5 @@
-﻿using InstagramCSharp.Factories;
+﻿using InstagramCSharp.Exceptions;
+using InstagramCSharp.Factories;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,12 +18,20 @@ namespace InstagramCSharp.Endpoints
         /// Get basic information about a user.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetUserBasicInfoAsync(ulong userId)
+        public async Task<string> GetUserBasicInfoAsync(long userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(UserEndpointUrlsFactory.CreateUserBasicInfoUrl(userId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserBasicInfoUrl(userId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -36,8 +45,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(UserEndpointUrlsFactory.CreateUserFeedUrl(this.accessToken, count, minId, maxId));
-                return response;
+                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserFeedUrl(this.accessToken, count, minId, maxId));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -49,12 +66,20 @@ namespace InstagramCSharp.Endpoints
         /// <param name="minTimestamp">Return media after this UNIX timestamp.</param>
         /// <param name="maxTimestamp">Return media before this UNIX timestamp.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetUserRecentMediaByAccessTokenAsync(ulong userId, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public async Task<string> GetUserRecentMediaByAccessTokenAsync(long userId, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(UserEndpointUrlsFactory.CreateUserRecentMediaByAccessTokenUrl(userId, this.accessToken, count, minId, maxId, minTimestamp, maxTimestamp));
-                return response;
+                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserRecentMediaByAccessTokenUrl(userId, this.accessToken, count, minId, maxId, minTimestamp, maxTimestamp));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
 
         }
@@ -67,12 +92,20 @@ namespace InstagramCSharp.Endpoints
         /// <param name="minTimestamp">Return media after this UNIX timestamp.</param>
         /// <param name="maxTimestamp">Return media before this UNIX timestamp.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetUserRecentMediaByClientIdAsync(ulong userId, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public async Task<string> GetUserRecentMediaByClientIdAsync(long userId, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(UserEndpointUrlsFactory.CreateUserRecentMediaByClientIdUrl(userId, this.clientId, count, minId, maxId, minTimestamp, maxTimestamp));
-                return response;
+                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserRecentMediaByClientIdUrl(userId, this.clientId, count, minId, maxId, minTimestamp, maxTimestamp));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -87,8 +120,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(UserEndpointUrlsFactory.CreateUserLikedMediaUrl(this.accessToken, count, maxLikeId));
-                return response;
+                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserLikedMediaUrl(this.accessToken, count, maxLikeId));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -101,8 +142,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(UserEndpointUrlsFactory.CreateSearchUsersUrl(this.accessToken, q, count));
-                return response;
+                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateSearchUsersUrl(this.accessToken, q, count));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
     }

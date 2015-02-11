@@ -1,4 +1,5 @@
-﻿using InstagramCSharp.Factories;
+﻿using InstagramCSharp.Exceptions;
+using InstagramCSharp.Factories;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -19,8 +20,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(TagEndpointsUrlsFactory.CreateTagInfoUrl(tagName, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(TagEndpointsUrlsFactory.CreateTagInfoUrl(tagName, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -30,12 +39,20 @@ namespace InstagramCSharp.Endpoints
         /// <param name="minId">Return media before this min_id.</param>
         /// <param name="maxId">Return media after this max_id.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetRecentTaggedMediaAsync(string tagName, string minId = null, string maxId = null)
+        public async Task<string> GetRecentTaggedMediaAsync(string tagName, int count = 0, string minTagId = null, string maxTagId = null)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(TagEndpointsUrlsFactory.CreateRecentTaggedMediaUrl(tagName, this.accessToken, minId, maxId));
-                return response;
+                var response = await httpClient.GetAsync(TagEndpointsUrlsFactory.CreateRecentTaggedMediaUrl(tagName, this.accessToken, count, minTagId, maxTagId));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -48,8 +65,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(TagEndpointsUrlsFactory.CreateSearchTagUrl(q, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(TagEndpointsUrlsFactory.CreateSearchTagUrl(q, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
 
         }

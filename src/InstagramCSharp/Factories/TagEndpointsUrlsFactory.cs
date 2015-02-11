@@ -9,27 +9,31 @@ namespace InstagramCSharp.Factories
             var queryString = BuildTagEndpointsUrlQueryString(accessToken);
             return BuildTagInfoUrl(tagName, InstagramAPIUrls.TagsEndpointsUrl, queryString);
         }
-        public static string CreateRecentTaggedMediaUrl(string tagName, string accessToken, string minId = null, string maxId = null)
+        public static string CreateRecentTaggedMediaUrl(string tagName, string accessToken,int count=0, string minTagId = null, string maxTagId = null)
         {
-            var queryString = BuildTagEndpointsUrlQueryString(accessToken, minId, maxId);
+            var queryString = BuildTagEndpointsUrlQueryString(accessToken,count, minTagId, maxTagId);
             return BuildRecentTaggedMediaUrl(tagName, InstagramAPIUrls.TagsEndpointsUrl, queryString);
         }
         public static string CreateSearchTagUrl(string q, string accessToken)
         {
-            var queryString = BuildTagEndpointsUrlQueryString(accessToken,null,null, q);
+            var queryString = BuildTagEndpointsUrlQueryString(accessToken,0,null,null, q);
             return BuildSearchTagUrl(InstagramAPIUrls.TagsEndpointsUrl, queryString);
         }
-        private static string BuildTagEndpointsUrlQueryString(string accessToken, string minId = null, string maxId = null, string q = null)
+        private static string BuildTagEndpointsUrlQueryString(string accessToken, int count = 0, string minTagId = null, string maxTagId = null, string q = null)
         {
             var queryString = HttpUtility.ParseQueryString("");
             queryString["access_token"] = accessToken;
-            if (minId != null)
+            if (count != 0)
             {
-                queryString["min_id"] = minId;
+                queryString["count"] = count.ToString();
             }
-            if (maxId != null)
+            if (minTagId != null)
             {
-                queryString["max_id"] = maxId;
+                queryString["min_tag_id"] = minTagId;
+            }
+            if (maxTagId != null)
+            {
+                queryString["max_tag_id"] = maxTagId;
             }
             if (q != null)
             {
@@ -50,7 +54,7 @@ namespace InstagramCSharp.Factories
 
         private static string BuildSearchTagUrl(string url, string queryString)
         {
-            url = url + "/tags/search";
+            url = url + "/search";
             return url + "?" + queryString;
         }
     }

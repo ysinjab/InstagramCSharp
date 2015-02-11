@@ -1,4 +1,5 @@
 ﻿﻿using InstagramCSharp.Enums;
+using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,12 +18,20 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetRelationshipInfoAsync(ulong userId)
+        public async Task<string> GetRelationshipInfoAsync(long userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -34,8 +43,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -43,12 +60,20 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetFollowsAsync(ulong userId)
+        public async Task<string> GetFollowsAsync(long userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -56,12 +81,20 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetFollowedByAsync(ulong userId)
+        public async Task<string> GetFollowedByAsync(long userId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -69,13 +102,20 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <param name="relationshipAction">One of follow/unfollow/block/unblock/approve/deny.</param>
-        /// <returns>HttpResponseMessage Object.</returns>
-        public async Task<HttpResponseMessage> PostRelationshipActionAsync(ulong userId, RelationshipActions relationshipAction)
+        public async Task<string> PostRelationshipActionAsync(long userId, RelationshipActions relationshipAction)
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, this.accessToken, relationshipAction), null);
-                return response;
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
     }

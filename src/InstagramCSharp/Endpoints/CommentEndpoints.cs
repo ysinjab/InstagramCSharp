@@ -1,4 +1,5 @@
-﻿using InstagramCSharp.Factories;
+﻿using InstagramCSharp.Exceptions;
+using InstagramCSharp.Factories;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,8 +23,16 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(CommentEndpointsUrlsFactory.CreateGETCommentUrl(mediaId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(CommentEndpointsUrlsFactory.CreateGETCommentUrl(mediaId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -32,27 +41,41 @@ namespace InstagramCSharp.Endpoints
         /// </summary>
         /// <param name="mediaId"></param>
         /// <param name="text">Text to post as a comment on the media as specified in media-id.</param>
-        /// <returns>HttpResponseMessage Object.</returns>
-        public async Task<HttpResponseMessage> PostMediaCommentAsync(string mediaId, string text)
+        public async Task<string> PostMediaCommentAsync(string mediaId, string text)
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 var content = BuildFormUrlEncodedContent(this.accessToken, text);
                 var response = await httpClient.PostAsync(CommentEndpointsUrlsFactory.CreatePOSTCommentUrl(mediaId), content);
-                return response;
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
         /// Remove a comment either on the authenticated user's media or authored by the authenticated user.
         /// Required scope: comments.
-        /// </summary>
-        /// <returns>HttpResponseMessage Object.</returns>
-        public async Task<HttpResponseMessage> DeleteMediaCommentAsync(string mediaId, ulong commentId)
+        /// </summary>       
+        public async Task<string> DeleteMediaCommentAsync(string mediaId, string commentId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 var response = await httpClient.DeleteAsync(CommentEndpointsUrlsFactory.CreateDELETECommentUrl(mediaId, commentId, this.accessToken));
-                return response;
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         private FormUrlEncodedContent BuildFormUrlEncodedContent(string accessToken, string text)

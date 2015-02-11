@@ -47,9 +47,12 @@
     <Compile Include="Endpoints\LocationEndpoints.cs" />
     <Compile Include="Endpoints\MediaEndpoints.cs" />
     <Compile Include="Endpoints\RelationshipEndpoints.cs" />
+    <Compile Include="Endpoints\SubscriptionsEndpoints.cs" />
     <Compile Include="Endpoints\TagEndpoints.cs" />
     <Compile Include="Endpoints\UserEndpoints.cs" />
     <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Exceptions\InstagramAPIException.cs" />
+    <Compile Include="Exceptions\SubscriptionVerifyException.cs" />
     <Compile Include="Factories\CommentEndpointsUrlsFactory.cs" />
     <Compile Include="Factories\GeographyEndpointUrlsFactory.cs" />
     <Compile Include="Factories\LikeEndpointsUrlsFactory.cs" />
@@ -62,11 +65,17 @@
     <Compile Include="Factories\UserEndpointUrlsFactory.cs" />
     <Compile Include="InstagramClient.cs" />
     <Compile Include="InstagramAPIUrls.cs" />
-    <Compile Include="Models\AuthUser.cs" />
+    <Compile Include="Models\AuthenticatedUser.cs" />
     <Compile Include="Models\Caption.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Comments.cs" />
-    <Compile Include="Models\Counts.cs" />
+    <Compile Include="Models\CommentsFeed.cs" />
+    <Compile Include="Models\CreatedSubscription.cs" />
+    <Compile Include="Models\FollowedByFeed.cs" />
+    <Compile Include="Models\FollowsFeed.cs" />
+    <Compile Include="Models\LikesFeed.cs" />
+    <Compile Include="Models\LocationInfo.cs" />
+    <Compile Include="Models\LocationsFeed.cs" />
     <Compile Include="Models\MediaFeed.cs" />
     <Compile Include="Models\Images.cs" />
     <Compile Include="Models\Likes.cs" />
@@ -79,16 +88,21 @@
     <Compile Include="Models\Position.cs" />
     <Compile Include="Models\RealTimeUpdate.cs" />
     <Compile Include="Models\RealTimeUpdateData.cs" />
+    <Compile Include="Models\RelationshipData.cs" />
+    <Compile Include="Models\RelationshipInfo.cs" />
     <Compile Include="Models\StandardResolution.cs" />
     <Compile Include="Models\Subscription.cs" />
     <Compile Include="Models\SubscriptionsFeed.cs" />
+    <Compile Include="Models\TagInfo.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\Thumbnail.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserBasicInfo.cs" />
+    <Compile Include="Models\UserCounts.cs" />
     <Compile Include="Models\UserInPhoto.cs" />
     <Compile Include="Models\Videos.cs" />
     <Compile Include="OAuth\InstagramOAuth.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RealTime\InstagramRealTime.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

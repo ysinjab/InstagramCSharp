@@ -1,4 +1,5 @@
-﻿using InstagramCSharp.Factories;
+﻿using InstagramCSharp.Exceptions;
+using InstagramCSharp.Factories;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,12 +16,20 @@ namespace InstagramCSharp.Endpoints
         /// Get information about a location.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetLocationInfoAsync(ulong locationId)
+        public async Task<string> GetLocationInfoAsync(long locationId)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(LocationEndpointsUrlsFactory.CreateLocationInfoUrl(locationId, this.accessToken));
-                return response;
+                var response = await httpClient.GetAsync(LocationEndpointsUrlsFactory.CreateLocationInfoUrl(locationId, this.accessToken));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
         /// <summary>
@@ -31,12 +40,20 @@ namespace InstagramCSharp.Endpoints
         /// <param name="minTimestamp">Return media after this UNIX timestamp.</param>
         /// <param name="maxTimestamp">Return media before this UNIX timestamp.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetRecentLocationMediaAsync(ulong locationId, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public async Task<string> GetRecentLocationMediaAsync(long locationId, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(LocationEndpointsUrlsFactory.CreateRecentLocationMediaUrl(locationId, this.accessToken, minId, maxId, minTimestamp, maxTimestamp));
-                return response;
+                var response = await httpClient.GetAsync(LocationEndpointsUrlsFactory.CreateRecentLocationMediaUrl(locationId, this.accessToken, minId, maxId, minTimestamp, maxTimestamp));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
 
@@ -49,13 +66,20 @@ namespace InstagramCSharp.Endpoints
         /// <param name="lat">Latitude of the center search coordinate. If used, lng is required.</param>
         /// <param name="lng">Longitude of the center search coordinate. If used, lat is required.</param>
         /// <param name="foursquareV2Id">Returns a location mapped off of a foursquare v2 api location id. If used, you are not required to use lat and lng.</param>
-        /// <returns>JSON result string.</returns>
-        public async Task<string> SearchLocationAsync(string distance = null, string facebookPlacesId = null, string foursquareId = null, double lat = 0, double lng = 0, string foursquareV2Id = null)
+        public async Task<string> SearchLocationAsync(double distance = 1000, string facebookPlacesId = null, string foursquareId = null, double lat = 0, double lng = 0, string foursquareV2Id = null)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetStringAsync(LocationEndpointsUrlsFactory.CreateSearchLocationUrl(this.accessToken, distance, facebookPlacesId, foursquareId, lat, lng, foursquareV2Id));
-                return response;
+                var response = await httpClient.GetAsync(LocationEndpointsUrlsFactory.CreateSearchLocationUrl(this.accessToken, distance, facebookPlacesId, foursquareId, lat, lng, foursquareV2Id));
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
             }
         }
     }
