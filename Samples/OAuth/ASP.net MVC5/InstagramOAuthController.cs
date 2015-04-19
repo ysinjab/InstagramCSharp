@@ -32,7 +32,7 @@ namespace InstagramCSharp_WebSample.Controllers
             if (result.IsSuccessStatusCode)
             {
                 string responseContent=result.Content.ReadAsStringAsync().Result;
-                AuthUser authenticatedUser = JsonConvert.DeserializeObject<AuthUser>(responseContent);                
+                AuthenticatedUser authenticatedUser = JsonConvert.DeserializeObject<AuthenticatedUser>(responseContent);               
             }
             else
             {

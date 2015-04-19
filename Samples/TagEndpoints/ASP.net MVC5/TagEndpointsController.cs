@@ -12,7 +12,7 @@ namespace InstagramCSharp_WebSample.Controllers
             string clientId = "YOUR_CLIENT_ID";
             string accessToken = "A_VALID_ACCESS_TOKEN";
             
-            InstagramClient client = new InstagramClient(clientId, accessToken);
+            InstagramClient client = new InstagramClient(clientId,null, accessToken);
 
             var recentTaggedMedia = await client.TagEndpoints.GetRecentTaggedMediaAsync(tag);
 
