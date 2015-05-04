@@ -3,4 +3,4 @@ InstagramCSharp
 
 InstagramCSharp is a light wrapper around the Instagram API.
 
-[Demo](http://jsfiddle.net/ysinjab/K4jLy/14/)
+[Demo](https://jsfiddle.net/ysinjab/K4jLy/19/)
