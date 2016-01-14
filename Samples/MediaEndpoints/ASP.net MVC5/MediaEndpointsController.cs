@@ -7,22 +7,23 @@ namespace InstagramCSharp_WebSample.Controllers
 {
     public class MediaEndpointsController : Controller
     {
-        public async Task<object> GetPopularMediaAsync()
+        public async Task<object> GetMediaInfo(string mediaId)
         {
             string clientId = "YOUR_CLIENT_ID";
+			string clientSecret = "YOUR_CLIENT_SECRET";
             string accessToken = "A_VALID_ACCESS_TOKEN";
 
-            InstagramClient client = new InstagramClient(clientId,null, accessToken);
+            InstagramClient client = new InstagramClient(clientId,clientSecret);
 
-            var popularMedia = await client.MediaEndpoints.GetPopularMediaAsync();
+            var media = await client.MediaEndpoints.GetMediaInfoAsync(mediaId, accessToken);
 
             //I use Json.NET for parsing the result
-            var popularMediaJson = JsonConvert.DeserializeObject(popularMedia);
+            var mediaJson = JsonConvert.DeserializeObject(media);
 
             //You can deserialize json result to one of the models in InstagramCSharp or to your custom model
-            //var popularMediaJson = JsonConvert.DeserializeObject<MediaFeed>(popularMedia);
+            //var mediaJson = JsonConvert.DeserializeObject<Envelope<Media>>(mediaJson);
 
-            return popularMediaJson;
+            return mediaJson;
         }   
 	}
 }

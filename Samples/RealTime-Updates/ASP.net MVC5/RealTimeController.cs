@@ -15,7 +15,7 @@ namespace InstagramCSharp_WebSample.Controllers
             string clientId = "YOUR_CLIENT_ID";
             string clientSecret = "YOUR_CLIENT_SECRET";
 
-            InstagramClient instagramClient = new InstagramClient(clientId, clientSecret, null);
+            InstagramClient instagramClient = new InstagramClient(clientId, clientSecret);
 
             if (Request.HttpMethod.Equals("GET", StringComparison.OrdinalIgnoreCase))
             {
