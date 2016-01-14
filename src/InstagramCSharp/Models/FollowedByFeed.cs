@@ -1,11 +1,9 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 namespace InstagramCSharp.Models
 {
-    public class FollowedByFeed
+    [Obsolete("FollowedByFeed class is deprecated, please use Envelope<List<User>> instead.")]
+    public class FollowedByFeed : Envelope<List<User>>
     {
-        public Pagination Pagination { get; set; }
-        public Meta Meta { get; set; }
-        public List<User> Data { get; set; }
     }
 }

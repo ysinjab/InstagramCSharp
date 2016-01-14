@@ -1,9 +1,8 @@
-﻿
+﻿using System;
 namespace InstagramCSharp.Models
-{  
-    public class LocationInfo
+{
+    [Obsolete("LocationInfo class is deprecated, please use Envelope<Location> instead.")]
+    public class LocationInfo : Envelope<Location>
     {
-        public Meta Meta { get; set; }
-        public Location Data { get; set; }
     }
 }

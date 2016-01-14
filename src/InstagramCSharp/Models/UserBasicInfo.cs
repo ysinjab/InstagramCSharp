@@ -1,9 +1,8 @@
-﻿
+﻿using System;
 namespace InstagramCSharp.Models
 {
-    public class UserBasicInfo
+    [Obsolete("UserBasicInfo class is deprecated, please use Envelope<User> instead.")]
+    public class UserBasicInfo : Envelope<User>
     {
-        public Meta Meta { get; set; }
-        public User Data { get; set; }
     }
 }

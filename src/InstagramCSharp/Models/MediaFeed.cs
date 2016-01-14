@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InstagramCSharp.Models
 {
-    public class MediaFeed
+    [Obsolete("MediaFeed class is deprecated, please use Envelope<List<Media>> instead.")]
+    public class MediaFeed : Envelope<List<Media>>
     {
-        public Pagination Pagination { get; set; }
-        public Meta Meta { get; set; }
-        public List<Media> Data { get; set; }
     }
 }

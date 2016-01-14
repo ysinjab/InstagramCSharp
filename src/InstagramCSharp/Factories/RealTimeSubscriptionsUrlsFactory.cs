@@ -47,16 +47,7 @@ namespace InstagramCSharp.Factories
             {
                 case RealTimeObjects.User:
                     queryString["object"] = "user";
-                    break;
-                case RealTimeObjects.Tag:
-                    queryString["object"] = "tag";
-                    break;
-                case RealTimeObjects.Location:
-                    queryString["object"] = "location";
-                    break;
-                case RealTimeObjects.Geography:
-                    queryString["object"] = "geography";
-                    break;
+                    break;               
                 case RealTimeObjects.All:
                     queryString["object"] = "all";
                     break;

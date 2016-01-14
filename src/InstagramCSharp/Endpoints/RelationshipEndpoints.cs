@@ -7,22 +7,17 @@ using System.Threading.Tasks;
 namespace InstagramCSharp.Endpoints
 {
     public class RelationshipEndpoints
-    {
-        private string accessToken;
-        public RelationshipEndpoints(string accessToken)
-        {
-            this.accessToken = accessToken;
-        }
+    {       
         /// <summary>
         /// Get information about a relationship to another user.
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetRelationshipInfoAsync(long userId)
+        public async Task<string> GetRelationshipInfoAsync(long userId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, this.accessToken));
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -39,11 +34,11 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetRequestedByAsync()
+        public async Task<string> GetRequestedByAsync(string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(this.accessToken));
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -60,11 +55,11 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetFollowsAsync(long userId)
+        public async Task<string> GetFollowsAsync(long userId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, this.accessToken));
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -81,11 +76,11 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetFollowedByAsync(long userId)
+        public async Task<string> GetFollowedByAsync(long userId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, this.accessToken));
+                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -102,11 +97,11 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <param name="relationshipAction">One of follow/unfollow/block/unblock/approve/deny.</param>
-        public async Task<string> PostRelationshipActionAsync(long userId, RelationshipActions relationshipAction)
+        public async Task<string> PostRelationshipActionAsync(long userId, string accessToken, RelationshipActions relationshipAction)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, this.accessToken, relationshipAction), null);
+                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, accessToken, relationshipAction), null);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {

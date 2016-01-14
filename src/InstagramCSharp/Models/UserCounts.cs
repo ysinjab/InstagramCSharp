@@ -1,5 +1,4 @@
-﻿
-namespace InstagramCSharp.Models
+﻿namespace InstagramCSharp.Models
 {
     public class UserCounts
     {

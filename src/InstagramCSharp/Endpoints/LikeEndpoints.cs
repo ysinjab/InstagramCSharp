@@ -8,21 +8,22 @@ namespace InstagramCSharp.Endpoints
 {
     public class LikeEndpoints
     {
-        private string accessToken;
-        public LikeEndpoints(string accessToken)
-        {
-            this.accessToken = accessToken;
-        }
+       
         /// <summary>
         /// Get a list of users who have liked this media.
         /// Required scope: likes
         /// </summary>
+        /// <param name="accessToken" type="string">
+        ///     <para>
+        ///         A valid access token.
+        ///     </para>
+        /// </param> 
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetMediaLikesAsync(string mediaId)
+        public async Task<string> GetMediaLikesAsync(string mediaId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(LikeEndpointsUrlsFactory.CreateGETLikeUrl(mediaId, this.accessToken));
+                var response = await httpClient.GetAsync(LikeEndpointsUrlsFactory.CreateGETLikeUrl(mediaId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -39,11 +40,16 @@ namespace InstagramCSharp.Endpoints
         /// Set a like on this media by the currently authenticated user.
         /// Required scope: likes
         /// </summary>
-        public async Task<string> PosLikeAsync(string mediaId)
+        /// <param name="accessToken" type="string">
+        ///     <para>
+        ///         A valid access token.
+        ///     </para>
+        /// </param>
+        public async Task<string> PosLikeAsync(string mediaId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var content = BuildFormUrlEncodedContent(this.accessToken);
+                var content = BuildFormUrlEncodedContent(accessToken);
                 var response = await httpClient.PostAsync(LikeEndpointsUrlsFactory.CreatePOSTLikeUrl(mediaId), content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
@@ -61,11 +67,16 @@ namespace InstagramCSharp.Endpoints
         /// Remove a like on this media by the currently authenticated user.
         /// Required scope: likes
         /// </summary>
-        public async Task<string> DeleteLikeAsync(string mediaId)
+        /// <param name="accessToken" type="string">
+        ///     <para>
+        ///         A valid access token.
+        ///     </para>
+        /// </param> 
+        public async Task<string> DeleteLikeAsync(string mediaId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync(LikeEndpointsUrlsFactory.CreateDELETELikeUrl(mediaId, this.accessToken));
+                var response = await httpClient.DeleteAsync(LikeEndpointsUrlsFactory.CreateDELETELikeUrl(mediaId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {

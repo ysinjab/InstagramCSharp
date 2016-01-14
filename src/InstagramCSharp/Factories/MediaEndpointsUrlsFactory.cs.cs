@@ -4,9 +4,9 @@ namespace InstagramCSharp.Factories
 {
     public static class MediaEndpointsUrlsFactory
     {
-        public static string CreateSearchMediaUrl(string accessToken, long minTimestamp = 0, long maxTimestamp = 0, string distance = null, double lat = 0, double lng = 0)
+        public static string CreateSearchMediaUrl(string accessToken, double distance, double lat = 0, double lng = 0)
         {
-            var queryString = BuildMediaEndpointsUrlsQueryString(accessToken, minTimestamp,maxTimestamp,distance,lat,lng);
+            var queryString = BuildMediaEndpointsUrlsQueryString(accessToken,distance,lat,lng);
             return BuildSearchMediaUrl(InstagramAPIUrls.MediaEndpointsUrl, queryString);
         }
         public static string CreateMediaInfoUrl(string mediaId, string accessToken)
@@ -19,25 +19,11 @@ namespace InstagramCSharp.Factories
             var queryString = BuildMediaEndpointsUrlsQueryString(accessToken);
             return BuildShortCodeMediaInfoUrl(shortCode, InstagramAPIUrls.MediaEndpointsUrl, queryString);
         }
-        public static string CreatePopularMediaUrl(string accessToken)
-        {
-            var queryString = BuildMediaEndpointsUrlsQueryString(accessToken);
-            return BuildPopularMediaUrl(InstagramAPIUrls.MediaEndpointsUrl, queryString);
-        }
-   
 
-        private static string BuildMediaEndpointsUrlsQueryString(string accessToken, long minTimestamp = 0, long maxTimestamp = 0, string distance = null, double lat = 0, double lng = 0)
+        private static string BuildMediaEndpointsUrlsQueryString(string accessToken, double distance = 0, double lat = 0, double lng = 0)
         {
             var queryString = HttpUtility.ParseQueryString("");
-            queryString["access_token"] = accessToken;
-            if (minTimestamp != 0)
-            {
-                queryString["min_timestamp"] = minTimestamp.ToString();
-            }
-            if (maxTimestamp != 0)
-            {
-                queryString["max_timestamp"] = maxTimestamp.ToString();
-            }
+            queryString["access_token"] = accessToken;           
             if (lat != 0)
             {
                 queryString["lat"] = lat.ToString();
@@ -46,9 +32,9 @@ namespace InstagramCSharp.Factories
             {
                 queryString["lng"] = lng.ToString();
             }
-            if (distance != null)
+            if (distance != 0)
             {
-                queryString["distance"] = distance;
+                queryString["distance"] = distance.ToString();
             }
             return queryString.ToString();
         }
@@ -67,13 +53,6 @@ namespace InstagramCSharp.Factories
             url = url + "/search";
             return url + "?" + queryString;
         }
-
-        private static string BuildPopularMediaUrl(string url, string queryString)
-        {
-            url = url + "/popular";
-            return url + "?" + queryString;
-        }
-
 
     }
 }

@@ -20,7 +20,7 @@ namespace InstagramCSharp.Factories
         }
 
         private static string BuildAuthorizationUrlQueryString(string clientId, string redirectUri, string responseType, IEnumerable<AccessScopes> accessScopes)
-        {
+        {           
             var queryString = HttpUtility.ParseQueryString("");
             queryString["client_id"] = clientId;
             queryString["redirect_uri"] = redirectUri;
@@ -44,16 +44,19 @@ namespace InstagramCSharp.Factories
                         case AccessScopes.Likes:
                             scopes.Add("likes");
                             break;
+                        case AccessScopes.FollowerList:
+                            scopes.Add("follower_list");
+                            break;
+                        case AccessScopes.PublicContent:
+                            scopes.Add("public_content");
+                            break;
 
                     }
-                }
+                }             
+
                 return queryString.ToString() + "&scope=" + String.Join("+", scopes);
             }
             return queryString.ToString();
         }
-     
-   
-
-
     }
 }

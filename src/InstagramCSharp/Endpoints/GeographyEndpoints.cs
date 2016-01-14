@@ -1,10 +1,12 @@
 ﻿using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace InstagramCSharp.Endpoints
 {
+     [Obsolete("Deprecation of /geographies/media/recent.")]
     public class GeographyEndpoints
     {
         private string clientId;

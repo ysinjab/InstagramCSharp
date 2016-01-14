@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InstagramCSharp.Models
 {
-    public class CommentsFeed
+     [Obsolete("CommentsFeed class is deprecated, please use Envelope<List<Comment>> instead.")]
+    public class CommentsFeed : Envelope<List<Comment>>
     {
-        public Meta Meta { get; set; }
-        public List<Comment> Data { get; set; }
     }
 
 }

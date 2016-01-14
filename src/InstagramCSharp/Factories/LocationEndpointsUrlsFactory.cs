@@ -9,9 +9,9 @@ namespace InstagramCSharp.Factories
             var queryString = CreateLocationUrlQueryString(accessToken);
             return BuildLocationInfoUrl(locationId, InstagramAPIUrls.LocationsEndpointsUrl, queryString);
         }
-        public static string CreateRecentLocationMediaUrl(long locationId, string accessToken, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public static string CreateRecentLocationMediaUrl(long locationId, string accessToken, string minId = null, string maxId = null)
         {
-            var queryString = CreateLocationUrlQueryString(accessToken, minId,maxId,minTimestamp,maxTimestamp);
+            var queryString = CreateLocationUrlQueryString(accessToken, minId,maxId);
             return BuildRecentLocationgedMediaUrl(locationId, InstagramAPIUrls.LocationsEndpointsUrl, queryString);
         }
         public static string CreateSearchLocationUrl(string accessToken, double distance = 1000, string facebookPlacesId = null, string foursquareId = null, double lat = 0, double lng = 0, string foursquareV2Id = null)
@@ -19,7 +19,7 @@ namespace InstagramCSharp.Factories
             var queryString = CreateSearchLocationUrlQueryString(accessToken, distance, facebookPlacesId, foursquareId, lat, lng, foursquareV2Id);
             return BuildSearchLocationUrl(InstagramAPIUrls.LocationsEndpointsUrl, queryString);
         }
-        private static string CreateLocationUrlQueryString(string accessToken, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        private static string CreateLocationUrlQueryString(string accessToken, string minId = null, string maxId = null)
         {
             var queryString = HttpUtility.ParseQueryString("");
             queryString["access_token"] = accessToken;
@@ -30,14 +30,6 @@ namespace InstagramCSharp.Factories
             if (maxId != null)
             {
                 queryString["max_id"] = maxId;
-            }
-            if (minTimestamp != 0)
-            {
-                queryString["min_timestamp"] = minTimestamp.ToString();
-            }
-            if (maxTimestamp != 0)
-            {
-                queryString["max_timestamp"] = maxTimestamp.ToString();
             }
             return queryString.ToString();
         }

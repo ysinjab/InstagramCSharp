@@ -1,10 +1,7 @@
 ﻿using InstagramCSharp.Enums;
 using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,7 +12,7 @@ namespace InstagramCSharp.Endpoints
     public class SubscriptionsEndpoints
     {
         private string clientId;
-        private string clientSecret;        
+        private string clientSecret;
         public SubscriptionsEndpoints(string clientId, string clientSecret)
         {
             this.clientId = clientId;
@@ -40,99 +37,8 @@ namespace InstagramCSharp.Endpoints
                 return response;
             }
         }
-        /// <summary>
-        /// Create RealTime Tag Subscription.
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="verifyToken"></param>
-        /// <param name="callbackUrl"></param>
-        /// <param name="objectId"></param>
-        /// <param name="aspect">The aspect of the object you'd like to subscribe to.</param>
-        /// <returns></returns>
-        public async Task<string> CreateTagSubscriptionAsync(string verifyToken, string callbackUrl, string objectId, RealTimeAspects aspect)
-        {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var postData = BuildFormUrlEncodedContentData(this.clientId, this.clientSecret, "tag", verifyToken, callbackUrl, aspect);
-                postData.Add(new KeyValuePair<string, string>("object_id", objectId));
-                FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
-                var response = await httpClient.PostAsync(InstagramAPIUrls.RealTimeSubscriptionsUrl, content);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    return responseContent;
-                }
-                else
-                {
-                    throw new InstagramAPIException(responseContent);
-                }
-            }
-        }
-        /// <summary>
-        /// Create RealTime Location Subscription.
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="verifyToken"></param>
-        /// <param name="callbackUrl"></param>
-        /// <param name="objectId"></param>
-        /// <param name="aspect">The aspect of the object you'd like to subscribe to.</param>
-        /// <returns></returns>
-        public async Task<string> CreateLocationSubscriptionAsync(string verifyToken, string callbackUrl, long objectId, RealTimeAspects aspect)
-        {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var postData = BuildFormUrlEncodedContentData(this.clientId, this.clientSecret, "location", verifyToken, callbackUrl, aspect);
-                postData.Add(new KeyValuePair<string, string>("object_id", objectId.ToString()));
-                FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
-                var response = await httpClient.PostAsync(InstagramAPIUrls.RealTimeSubscriptionsUrl, content);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    return responseContent;
-                }
-                else
-                {
-                    throw new InstagramAPIException(responseContent);
-                }
-            }
-        }
-        /// <summary>
-        /// Create Geography User Subscription.
-        /// Note:
-        /// To create a subscription to a geography, specify a center latitude and longitude and a radius of the area you'd like to capture around that point (maximum radius is 5000 meters)
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="verifyToken"></param>
-        /// <param name="callbackUrl"></param>
-        /// <param name="lat">Latitude.</param>
-        /// <param name="lng">Longitude.</param>
-        /// <param name="radius">Maximum radius is 5000 meters</param>
-        /// <param name="aspect">The aspect of the object you'd like to subscribe to.</param>
-        /// <returns></returns>
-        public async Task<string> CreateGeographySubscriptionAsync(string verifyToken, string callbackUrl, double lat, double lng, double radius, RealTimeAspects aspect)
-        {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                var postData = BuildFormUrlEncodedContentData(this.clientId, this.clientSecret, "geography", verifyToken, callbackUrl, aspect);
-                postData.Add(new KeyValuePair<string, string>("lat", lat.ToString()));
-                postData.Add(new KeyValuePair<string, string>("lng", lng.ToString()));
-                postData.Add(new KeyValuePair<string, string>("radius", radius.ToString()));
-                FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
-                var response = await httpClient.PostAsync(InstagramAPIUrls.RealTimeSubscriptionsUrl, content);
-                string responseContent = await response.Content.ReadAsStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    return responseContent;
-                }
-                else
-                {
-                    throw new InstagramAPIException(responseContent);
-                }
-            }
-        }
+      
+     
         /// <summary>
         /// List all subscriptions.
         /// </summary>
@@ -241,12 +147,12 @@ namespace InstagramCSharp.Endpoints
         ///         hub.challenge
         ///     </para>
         /// </param>
-        public void VerifyGetSubscription(string verifyToken,string requestHubMode, string requestVerifyToken, string requestHubChallenge)
+        public void VerifyGetSubscription(string verifyToken, string requestHubMode, string requestVerifyToken, string requestHubChallenge)
         {
             if (verifyToken != requestVerifyToken)
             {
                 throw new SubscriptionVerifyException("hub.verify_token and verifyToken did not match");
-            }           
+            }
         }
         /// <summary>
         ///     VerifyPostSubscription
@@ -263,18 +169,18 @@ namespace InstagramCSharp.Endpoints
         /// </param>
         public void VerifyPostSubscription(string xHubSignature, string rawResponseData)
         {
-            var sha1 = ComputeHash(Encoding.UTF8.GetBytes(rawResponseData), Encoding.UTF8.GetBytes(this.clientSecret));
+            var sha1 = Utilities.ComputeHash<HMACSHA1>(Encoding.UTF8.GetBytes(rawResponseData), Encoding.UTF8.GetBytes(this.clientSecret));
             if (sha1 != xHubSignature)
             {
                 throw new SubscriptionVerifyException("X-Hub-Signature and hmac digest did not match");
             }
         }
-        private string ComputeHash(byte[] data, byte[] key)
-        {
-            HMACSHA1 myhmacsha1 = new HMACSHA1(key);
-            MemoryStream stream = new MemoryStream(data);
-            return myhmacsha1.ComputeHash(stream).Aggregate("", (s, e) => s + String.Format("{0:x2}", e), s => s);
-        }
+        //private string ComputeHash(byte[] data, byte[] key)
+        //{
+        //    HMACSHA1 myhmacsha1 = new HMACSHA1(key);
+        //    MemoryStream stream = new MemoryStream(data);
+        //    return myhmacsha1.ComputeHash(stream).Aggregate("", (s, e) => s + String.Format("{0:x2}", e), s => s);
+        //}
         private List<KeyValuePair<string, string>> BuildFormUrlEncodedContentData(string clientId, string clientSecret, string obj, string verifyToken, string callbackUrl, RealTimeAspects aspect)
         {
             var postData = new List<KeyValuePair<string, string>>();

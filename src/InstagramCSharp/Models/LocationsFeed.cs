@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace InstagramCSharp.Models
 {
-    public class LocationsFeed
+    [Obsolete("LocationsFeed class is deprecated, please use Envelope<List<Location>> instead.")]
+    public class LocationsFeed : Envelope<List<Location>>
     {
-        public Meta Meta { get; set; }
-        public List<Location> Data { get; set; }
     }
 }

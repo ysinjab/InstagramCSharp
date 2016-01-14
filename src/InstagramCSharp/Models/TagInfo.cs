@@ -1,9 +1,8 @@
-﻿
+﻿using System;
 namespace InstagramCSharp.Models
 {
-    public class TagInfo
+    [Obsolete("TagInfo class is deprecated, please use Envelope<Tag> instead.")]
+    public class TagInfo : Envelope<Tag>
     {
-        public Meta Meta { get; set; }
-        public Tag Data { get; set; }
     }
 }

@@ -8,22 +8,23 @@ namespace InstagramCSharp.Endpoints
 {
     public class CommentEndpoints
     {
-        private string accessToken;
-        public CommentEndpoints(string accessToken)
-        {
-            this.accessToken = accessToken;
-        }
+       
         /// <summary>
-        /// Get a full list of comments on a media.
+        /// Get a list of recent comments on a media object. The public_content permission scope is required to get comments for a media that does not belong to the owner of the access_token.
         /// Required scope: comments.
         /// </summary>
         /// <param name="mediaId"></param>
+        /// <param name="accessToken" type="string">
+        ///     <para>
+        ///         A valid access token.
+        ///     </para>
+        /// </param> 
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetMediaCommentsAsync(string mediaId)
+        public async Task<string> GetMediaCommentsAsync(string mediaId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(CommentEndpointsUrlsFactory.CreateGETCommentUrl(mediaId, this.accessToken));
+                var response = await httpClient.GetAsync(CommentEndpointsUrlsFactory.CreateGETCommentUrl(mediaId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -37,15 +38,25 @@ namespace InstagramCSharp.Endpoints
         }
         /// <summary>
         /// Create a comment on a media. Please email apidevelopers[at]instagram.com for access.
+        /// Create a comment on a media object with the following rules:
+        /// * The total length of the comment cannot exceed 300 characters.
+        /// * The comment cannot contain more than 4 hashtags.
+        /// * The comment cannot contain more than 1 URL.
+        /// * The comment cannot consist of all capital letters.
         /// Required scope: comments.
         /// </summary>
         /// <param name="mediaId"></param>
         /// <param name="text">Text to post as a comment on the media as specified in media-id.</param>
-        public async Task<string> PostMediaCommentAsync(string mediaId, string text)
+        /// <param name="accessToken" type="string">
+        ///     <para>
+        ///         A valid access token.
+        ///     </para>
+        /// </param> 
+        public async Task<string> PostMediaCommentAsync(string mediaId, string text, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var content = BuildFormUrlEncodedContent(this.accessToken, text);
+                var content = BuildFormUrlEncodedContent(accessToken, text);
                 var response = await httpClient.PostAsync(CommentEndpointsUrlsFactory.CreatePOSTCommentUrl(mediaId), content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
@@ -58,15 +69,21 @@ namespace InstagramCSharp.Endpoints
                 }
             }
         }
+
+
         /// <summary>
-        /// Remove a comment either on the authenticated user's media or authored by the authenticated user.
-        /// Required scope: comments.
-        /// </summary>       
-        public async Task<string> DeleteMediaCommentAsync(string mediaId, string commentId)
+        ///  Remove a comment either on the authenticated user's media object or authored by the authenticated user.
+        /// </summary>
+        /// <param name="accessToken" type="string">
+        ///     <para>
+        ///         A valid access token.
+        ///     </para>
+        /// </param>
+        public async Task<string> DeleteMediaCommentAsync(string mediaId, string commentId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync(CommentEndpointsUrlsFactory.CreateDELETECommentUrl(mediaId, commentId, this.accessToken));
+                var response = await httpClient.DeleteAsync(CommentEndpointsUrlsFactory.CreateDELETECommentUrl(mediaId, commentId, accessToken));
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
