@@ -1,5 +1,6 @@
 ﻿using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,7 +9,14 @@ namespace InstagramCSharp.Endpoints
 {
     public class CommentEndpoints
     {
-       
+        public string ClientSecret { get; private set; }
+        public bool EnforceSignedRequests { get; private set; }
+        public CommentEndpoints(string clientSecret, bool enforceSignedRequests)
+        {
+            this.ClientSecret = clientSecret;
+            this.EnforceSignedRequests = enforceSignedRequests;
+        }
+
         /// <summary>
         /// Get a list of recent comments on a media object. The public_content permission scope is required to get comments for a media that does not belong to the owner of the access_token.
         /// Required scope: comments.
@@ -24,7 +32,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(CommentEndpointsUrlsFactory.CreateGETCommentUrl(mediaId, accessToken));
+                Uri uri = CommentEndpointsUrlsFactory.CreateGETCommentsUrl(mediaId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.CommentsEndpoint, mediaId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,8 +69,9 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var content = BuildFormUrlEncodedContent(accessToken, text);
-                var response = await httpClient.PostAsync(CommentEndpointsUrlsFactory.CreatePOSTCommentUrl(mediaId), content);
+                var content = BuildFormUrlEncodedContent(accessToken,mediaId, text);
+                Uri uri = CommentEndpointsUrlsFactory.CreatePOSTCommentUrl(mediaId);              
+                var response = await httpClient.PostAsync(uri, content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -83,7 +97,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync(CommentEndpointsUrlsFactory.CreateDELETECommentUrl(mediaId, commentId, accessToken));
+                Uri uri = CommentEndpointsUrlsFactory.CreateDELETECommentUrl(mediaId, commentId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.CommentEndpoint, mediaId, commentId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.DeleteAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -95,11 +114,16 @@ namespace InstagramCSharp.Endpoints
                 }
             }
         }
-        private FormUrlEncodedContent BuildFormUrlEncodedContent(string accessToken, string text)
+        private FormUrlEncodedContent BuildFormUrlEncodedContent(string accessToken,string mediaId, string text)
         {
             var postData = new List<KeyValuePair<string, string>>();
             postData.Add(new KeyValuePair<string, string>("access_token", accessToken));
             postData.Add(new KeyValuePair<string, string>("text", text));
+            if (this.EnforceSignedRequests)
+            {
+                 postData.Add(new KeyValuePair<string, string>("sig", 
+                     Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.CommentsEndpoint, mediaId), this.ClientSecret, postData)));
+            }
             FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
             return content;
         }

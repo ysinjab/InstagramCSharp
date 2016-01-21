@@ -1,5 +1,6 @@
 ﻿using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -7,6 +8,14 @@ namespace InstagramCSharp.Endpoints
 {
     public class UserEndpoints
     {
+        public string ClientSecret { get; private set; }
+        public bool EnforceSignedRequests { get; private set; }
+        public UserEndpoints(string clientSecret, bool enforceSignedRequests)
+        {
+            this.ClientSecret = clientSecret;
+            this.EnforceSignedRequests = enforceSignedRequests;
+        }
+
         /// <summary>
         ///     Get information about the owner of the accessToken.
         /// </summary>
@@ -22,7 +31,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateSelfUserUrl(accessToken));
+                Uri uri = UserEndpointUrlsFactory.CreateSelfUserUrl(accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.SelfUserInfoEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -43,7 +57,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserBasicInfoUrl(userId, accessToken));
+                Uri uri = UserEndpointUrlsFactory.CreateUserBasicInfoUrl(userId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.UserBasicInfoEndpoint, userId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -67,7 +86,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateSelfRecentMediaUrl(accessToken, count, minId, maxId));
+                Uri uri = UserEndpointUrlsFactory.CreateSelfRecentMediaUrl(accessToken, count, minId, maxId);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.SelfRecentMediaEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -90,11 +114,16 @@ namespace InstagramCSharp.Endpoints
         /// <param name="minTimestamp">Return media after this UNIX timestamp.</param>
         /// <param name="maxTimestamp">Return media before this UNIX timestamp.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetUserRecentMediaAsync(long userId, string accessToken = null, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
+        public async Task<string> GetUserRecentMediaAsync(long userId, string accessToken, int count = 0, string minId = null, string maxId = null, long minTimestamp = 0, long maxTimestamp = 0)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserRecentMediaUrl(userId, accessToken, count, minId, maxId, minTimestamp, maxTimestamp));
+                Uri uri = UserEndpointUrlsFactory.CreateUserRecentMediaUrl(userId, accessToken, count, minId, maxId, minTimestamp, maxTimestamp);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.UserRecentMediaEndpoint, userId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -121,7 +150,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateUserLikedMediaUrl(accessToken, count, maxLikeId));
+                Uri uri = UserEndpointUrlsFactory.CreateUserLikedMediaUrl(accessToken, count, maxLikeId);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.UserLikedMediaEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -140,11 +174,16 @@ namespace InstagramCSharp.Endpoints
         /// <param name="accessToken">A valid access token.</param>
         /// <param name="count">Number of users to return.</param>
         /// <returns>JSON result string.</returns>
-        public async Task<string> SearchUsersAsync(string q, string accessToken = null, int count = 0)
+        public async Task<string> SearchUsersAsync(string q, string accessToken, int count = 0)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(UserEndpointUrlsFactory.CreateSearchUsersUrl(accessToken, q, count));
+                Uri uri = UserEndpointUrlsFactory.CreateSearchUsersUrl(accessToken, q, count);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.SearchUsersEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {

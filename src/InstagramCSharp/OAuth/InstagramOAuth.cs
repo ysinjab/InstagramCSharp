@@ -27,9 +27,6 @@ namespace InstagramCSharp.OAuth
                 var response = await httpClient.PostAsync(InstagramAPIUrls.OAuthAccessTokenUrl, content);
                 return response;
             }
-
         }
-
-
     }
 }

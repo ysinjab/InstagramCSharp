@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InstagramCSharp.Endpoints
 {
-     [Obsolete("Deprecation of /geographies/media/recent.")]
+    [Obsolete("Deprecation of /geographies/media/recent.")]
     public class GeographyEndpoints
     {
         private string clientId;

@@ -17,7 +17,7 @@ namespace InstagramCSharp_ConsoleApp
             string clientSecret = "YOUR_CLIENT_SECRET";
             string callbackUrl = "YOUR_CALLBACK_URI";
 
-            InstagramClient instagramClient = new InstagramClient(clientId, clientSecret);
+            InstagramClient instagramClient = new InstagramClient(clientId, clientSecret, null);
 
             try
             {

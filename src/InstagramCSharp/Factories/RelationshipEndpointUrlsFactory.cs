@@ -1,34 +1,34 @@
 ﻿using InstagramCSharp.Enums;
+using System;
 using System.Web;
 namespace InstagramCSharp.Factories
 {
     public static class RelationshipEndpointUrlsFactory
     {
-        public static string CreateUserFollowsUrl(long userId, string accessToken)
+        public static Uri CreateUserFollowsUrl(string accessToken)
         {
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
-            return BuildUserFollowsUrl(userId, InstagramAPIUrls.RelationshipsEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + InstagramAPIEndpoints.UserFollowsEndpoint + "?" + queryString);
         }
-        public static string CreateUserFollowedByUrl(long userId, string accessToken)
+        public static Uri CreateUserFollowedByUrl(string accessToken)
         {
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
-            return BuildUserFollowedByUrl(userId, InstagramAPIUrls.RelationshipsEndpointsUrl, queryString);
-
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + InstagramAPIEndpoints.UserFollowedByEndpoint + "?" + queryString);
         }
-        public static string CreateRequestedByUrl(string accessToken)
+        public static Uri CreateRequestedByUrl(string accessToken)
         {
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
-            return BuildRequestedByUrl(InstagramAPIUrls.RelationshipsEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + InstagramAPIEndpoints.RequestedByEndpoint + "?" + queryString);
         }
-        public static string CreateRelationshipUrl(long userId, string accessToken)
+        public static Uri CreateRelationshipUrl(long userId, string accessToken)
         {
             var queryString = BuildRelationshipEndpointUrlsQueryString(accessToken);
-            return BuildRelationshipUrl(userId, InstagramAPIUrls.RelationshipsEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.RelationshipEndpoint, userId) + "?" + queryString);
         }
-        public static string CreatePOSTRelationshipActionUrl(long userId, string accessToken, RelationshipActions relationshipAction)
+        public static Uri CreatePOSTRelationshipActionUrl(long userId, string accessToken, RelationshipActions relationshipAction)
         {
             var queryString = BuildPOSTRelationshipActionUrlQueryString(accessToken, relationshipAction);
-            return BuildRelationshipUrl(userId, InstagramAPIUrls.RelationshipsEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.RelationshipEndpoint, userId) + "?" + queryString);
         }
         private static string BuildRelationshipEndpointUrlsQueryString(string accessToken)
         {
@@ -62,27 +62,6 @@ namespace InstagramCSharp.Factories
                     break;
             }
             return queryString.ToString();
-        }
-        private static string BuildUserFollowsUrl(long userId, string url, string queryString)
-        {
-            url = string.Format(url + "/{0}/follows", userId);
-            return url + "?" + queryString;
-        }
-
-        private static string BuildUserFollowedByUrl(long userId, string url, string queryString)
-        {
-            url = string.Format(url + "/{0}/followed-by", userId);
-            return url + "?" + queryString;
-        }
-        private static string BuildRequestedByUrl(string url, string queryString)
-        {
-            url = url + "/self/requested-by";
-            return url + "?" + queryString;
-        }
-        private static string BuildRelationshipUrl(long userId, string url, string queryString)
-        {
-            url = string.Format(url + "/{0}/relationship", userId);
-            return url + "?" + queryString;
         }
     }
 }

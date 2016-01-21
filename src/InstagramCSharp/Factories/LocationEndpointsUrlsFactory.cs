@@ -1,23 +1,24 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace InstagramCSharp.Factories
 {
     public class LocationEndpointsUrlsFactory
     {
-        public static string CreateLocationInfoUrl(long locationId, string accessToken)
+        public static Uri CreateLocationInfoUrl(long locationId, string accessToken)
         {
             var queryString = CreateLocationUrlQueryString(accessToken);
-            return BuildLocationInfoUrl(locationId, InstagramAPIUrls.LocationsEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.LocationInfoEndpoint, locationId) + "?" + queryString); 
         }
-        public static string CreateRecentLocationMediaUrl(long locationId, string accessToken, string minId = null, string maxId = null)
+        public static Uri CreateRecentLocationMediaUrl(long locationId, string accessToken, string minId = null, string maxId = null)
         {
-            var queryString = CreateLocationUrlQueryString(accessToken, minId,maxId);
-            return BuildRecentLocationgedMediaUrl(locationId, InstagramAPIUrls.LocationsEndpointsUrl, queryString);
+            var queryString = CreateLocationUrlQueryString(accessToken, minId, maxId);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.RecentLocationgedMediaEndpoint, locationId) + "?" + queryString); 
         }
-        public static string CreateSearchLocationUrl(string accessToken, double distance = 1000, string facebookPlacesId = null, string foursquareId = null, double lat = 0, double lng = 0, string foursquareV2Id = null)
+        public static Uri CreateSearchLocationUrl(string accessToken, double distance = 1000, string facebookPlacesId = null, string foursquareId = null, double lat = 0, double lng = 0, string foursquareV2Id = null)
         {
             var queryString = CreateSearchLocationUrlQueryString(accessToken, distance, facebookPlacesId, foursquareId, lat, lng, foursquareV2Id);
-            return BuildSearchLocationUrl(InstagramAPIUrls.LocationsEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + InstagramAPIEndpoints.SearchLocationEndpoint + "?" + queryString); 
         }
         private static string CreateLocationUrlQueryString(string accessToken, string minId = null, string maxId = null)
         {
@@ -59,21 +60,6 @@ namespace InstagramCSharp.Factories
                 queryString["foursquare_v2_id"] = foursquareV2Id;
             }
             return queryString.ToString();
-        }
-        private static string BuildLocationInfoUrl(long locationId, string url, string queryString)
-        {
-            url = string.Format(url + "/{0}", locationId);
-            return url + "?" + queryString;
-        }
-        private static string BuildRecentLocationgedMediaUrl(long locationId, string url, string queryString)
-        {
-            url = string.Format(url + "/{0}/media/recent", locationId);
-            return url + "?" + queryString;
-        }
-        private static string BuildSearchLocationUrl(string url, string queryString)
-        {
-            url = url + "/search";
-            return url + "?" + queryString;
-        }
+        }       
     }
 }

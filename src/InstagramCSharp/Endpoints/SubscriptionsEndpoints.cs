@@ -27,14 +27,23 @@ namespace InstagramCSharp.Endpoints
         /// <param name="callbackUrl"></param>
         /// <param name="aspect">The aspect of the object you'd like to subscribe to.</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> CreateUserSubscriptionAsync(string verifyToken, string callbackUrl, RealTimeAspects aspect)
+        public async Task<string> CreateUserSubscriptionAsync(string verifyToken, string callbackUrl, RealTimeAspects aspect)
         {
             using (HttpClient httpClient = new HttpClient())
             {
                 var postData = BuildFormUrlEncodedContentData(this.clientId, this.clientSecret, "user", verifyToken, callbackUrl, aspect);
                 FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
                 var response = await httpClient.PostAsync(InstagramAPIUrls.RealTimeSubscriptionsUrl, content);
-                return response;
+                string responseContent = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    return responseContent;
+                }
+                else
+                {
+                    throw new InstagramAPIException(responseContent);
+                }
+                      
             }
         }
       
@@ -175,12 +184,7 @@ namespace InstagramCSharp.Endpoints
                 throw new SubscriptionVerifyException("X-Hub-Signature and hmac digest did not match");
             }
         }
-        //private string ComputeHash(byte[] data, byte[] key)
-        //{
-        //    HMACSHA1 myhmacsha1 = new HMACSHA1(key);
-        //    MemoryStream stream = new MemoryStream(data);
-        //    return myhmacsha1.ComputeHash(stream).Aggregate("", (s, e) => s + String.Format("{0:x2}", e), s => s);
-        //}
+   
         private List<KeyValuePair<string, string>> BuildFormUrlEncodedContentData(string clientId, string clientSecret, string obj, string verifyToken, string callbackUrl, RealTimeAspects aspect)
         {
             var postData = new List<KeyValuePair<string, string>>();

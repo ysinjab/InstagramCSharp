@@ -1,5 +1,6 @@
 ﻿using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -7,6 +8,13 @@ namespace InstagramCSharp.Endpoints
 {
     public class TagEndpoints
     {
+        public string ClientSecret { get; private set; }
+        public bool EnforceSignedRequests { get; private set; }
+        public TagEndpoints(string clientSecret, bool enforceSignedRequests)
+        {
+            this.ClientSecret = clientSecret;
+            this.EnforceSignedRequests = enforceSignedRequests;
+        }
 
         /// <summary>
         /// Get information about a tag object.
@@ -21,7 +29,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(TagEndpointsUrlsFactory.CreateTagInfoUrl(tagName, accessToken));
+                Uri uri = TagEndpointsUrlsFactory.CreateTagInfoUrl(tagName, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.TagInfoEndpoint, tagName), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,7 +62,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(TagEndpointsUrlsFactory.CreateRecentTaggedMediaUrl(tagName, accessToken, count, minTagId, maxTagId));
+                Uri uri = TagEndpointsUrlsFactory.CreateRecentTaggedMediaUrl(tagName, accessToken, count, minTagId, maxTagId);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.RecentTaggedMediaEndpoint, tagName), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,7 +94,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(TagEndpointsUrlsFactory.CreateSearchTagUrl(q, accessToken));
+                Uri uri = TagEndpointsUrlsFactory.CreateSearchTagUrl(q, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.SearchTagEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {

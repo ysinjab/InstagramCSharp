@@ -1,8 +1,8 @@
-﻿namespace InstagramCSharp.Models
+﻿using System;
+namespace InstagramCSharp.Models
 {
-    public class CreatedSubscription
-    {
-        public Meta Meta { get; set; }
-        public Subscription Data { get; set; }
+    [Obsolete("CreatedSubscription class is deprecated, please use Envelope<Subscription> instead.")]
+    public class CreatedSubscription : Envelope<Subscription>
+    {     
     }
 }

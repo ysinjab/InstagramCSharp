@@ -1,46 +1,29 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace InstagramCSharp.Factories
 {
     public static class CommentEndpointsUrlsFactory
     {
-        public static string CreateGETCommentUrl(string mediaId, string accessToken)
+        public static Uri CreateGETCommentsUrl(string mediaId, string accessToken)
         {
-            var queryString = BuildCommentEndpointsUrlQueryString(accessToken);
-            return BuildCommentUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl, queryString);
+            var queryString = BuildCommentsEndpointsUrlQueryString(accessToken);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.CommentsEndpoint, mediaId) + "?" + queryString); 
         }
-        public static string CreatePOSTCommentUrl(string mediaId)
+        public static Uri CreatePOSTCommentUrl(string mediaId)
         {
-            return BuildCommentUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.CommentsEndpoint, mediaId));
         }
-        public static string CreateDELETECommentUrl(string mediaId, string commentId, string accessToken)
+        public static Uri CreateDELETECommentUrl(string mediaId, string commentId, string accessToken)
         {
-            var queryString = BuildCommentEndpointsUrlQueryString(accessToken);
-            return BuildCommentUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl, queryString, commentId);
-        }      
-        private static string BuildCommentEndpointsUrlQueryString(string accessToken)
+            var queryString = BuildCommentsEndpointsUrlQueryString(accessToken);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.CommentEndpoint, mediaId, commentId) + "?" + queryString); 
+        }
+        private static string BuildCommentsEndpointsUrlQueryString(string accessToken)
         {
             var queryString = HttpUtility.ParseQueryString("");
             queryString["access_token"] = accessToken;
             return queryString.ToString();
-        }
-        private static string BuildCommentUrl(string mediaId, string url, string queryString = null, string commentId =null)
-        {
-            if (queryString==null)
-            {
-                url = string.Format(url + "/{0}/comments", mediaId);
-                return url;
-            }
-            if (commentId != null)
-            {
-                url = string.Format(url + "/{0}/comments/{1}", mediaId, commentId);
-                return url + "?" + queryString;
-            }
-            else
-            {
-                url = string.Format(url + "/{0}/comments", mediaId);
-                return url + "?" + queryString;
-            }
-        }
+        }       
     }
 }

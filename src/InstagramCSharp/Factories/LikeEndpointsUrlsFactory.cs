@@ -1,22 +1,23 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 
 namespace InstagramCSharp.Factories
 {
     public class LikeEndpointsUrlsFactory
     {
-        public static string CreateGETLikeUrl(string mediaId, string accessToken)
+        public static Uri CreateGETLikeUrl(string mediaId, string accessToken)
         {
             var queryString = BuildLikeEndpointsUrlQueryString(accessToken);
-            return BuildLikeUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.LikesEndpoint, mediaId) + "?" + queryString);
         }
-        public static string CreatePOSTLikeUrl(string mediaId)
+        public static Uri CreatePOSTLikeUrl(string mediaId)
         {
-            return BuildLikeUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.LikesEndpoint, mediaId)); 
         }
-        public static string CreateDELETELikeUrl(string mediaId, string accessToken)
+        public static Uri CreateDELETELikeUrl(string mediaId, string accessToken)
         {
             var queryString = BuildLikeEndpointsUrlQueryString(accessToken);
-            return BuildLikeUrl(mediaId, InstagramAPIUrls.MediaEndpointsUrl, queryString);
+            return new Uri(InstagramAPIUrls.BaseAPIUrl + string.Format(InstagramAPIEndpoints.LikesEndpoint, mediaId) + "?" + queryString); 
         }
         private static string BuildLikeEndpointsUrlQueryString(string accessToken)
         {
@@ -24,17 +25,5 @@ namespace InstagramCSharp.Factories
             queryString["access_token"] = accessToken;
             return queryString.ToString();
         }
-        private static string BuildLikeUrl(string mediaId, string url, string queryString = null)
-        {
-            url = string.Format(url + "/{0}/likes", mediaId);
-            if (queryString==null)
-            {
-                return url;
-            }
-            else
-            {
-                return url + "?" + queryString;
-            }           
-        }    
     }
 }

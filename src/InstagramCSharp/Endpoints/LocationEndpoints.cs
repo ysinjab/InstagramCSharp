@@ -1,5 +1,6 @@
 ﻿using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -7,6 +8,13 @@ namespace InstagramCSharp.Endpoints
 {
     public class LocationEndpoints
     {
+        public string ClientSecret { get; private set; }
+        public bool EnforceSignedRequests { get; private set; }
+        public LocationEndpoints(string clientSecret, bool enforceSignedRequests)
+        {
+            this.ClientSecret = clientSecret;
+            this.EnforceSignedRequests = enforceSignedRequests;
+        }
 
         /// <summary>
         /// Get information about a location.
@@ -21,7 +29,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(LocationEndpointsUrlsFactory.CreateLocationInfoUrl(locationId, accessToken));
+                Uri uri = LocationEndpointsUrlsFactory.CreateLocationInfoUrl(locationId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.LocationInfoEndpoint, locationId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -48,7 +61,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(LocationEndpointsUrlsFactory.CreateRecentLocationMediaUrl(locationId, accessToken, minId, maxId));
+                Uri uri = LocationEndpointsUrlsFactory.CreateRecentLocationMediaUrl(locationId, accessToken, minId, maxId);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.RecentLocationgedMediaEndpoint, locationId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -79,7 +97,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(LocationEndpointsUrlsFactory.CreateSearchLocationUrl(accessToken, distance, facebookPlacesId, foursquareId, lat, lng, foursquareV2Id));
+                Uri uri = LocationEndpointsUrlsFactory.CreateSearchLocationUrl(accessToken, distance, facebookPlacesId, foursquareId, lat, lng, foursquareV2Id);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.SearchLocationEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {

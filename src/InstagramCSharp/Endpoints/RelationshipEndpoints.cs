@@ -1,13 +1,22 @@
 ﻿﻿using InstagramCSharp.Enums;
 using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace InstagramCSharp.Endpoints
 {
     public class RelationshipEndpoints
-    {       
+    {
+        public string ClientSecret { get; private set; }
+        public bool EnforceSignedRequests { get; private set; }
+        public RelationshipEndpoints(string clientSecret, bool enforceSignedRequests)
+        {
+            this.ClientSecret = clientSecret;
+            this.EnforceSignedRequests = enforceSignedRequests;
+        }
+
         /// <summary>
         /// Get information about a relationship to another user.
         /// Required scope: relationships.
@@ -17,7 +26,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, accessToken));
+                Uri uri = RelationshipEndpointUrlsFactory.CreateRelationshipUrl(userId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.RelationshipEndpoint, userId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -38,7 +52,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateRequestedByUrl(accessToken));
+                Uri uri = RelationshipEndpointUrlsFactory.CreateRequestedByUrl(accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.RequestedByEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -55,11 +74,16 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetFollowsAsync(long userId, string accessToken)
+        public async Task<string> GetFollowsAsync(string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(userId, accessToken));
+                Uri uri = RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.UserFollowedByEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,11 +100,16 @@ namespace InstagramCSharp.Endpoints
         /// Required scope: relationships.
         /// </summary>
         /// <returns>JSON result string.</returns>
-        public async Task<string> GetFollowedByAsync(long userId, string accessToken)
+        public async Task<string> GetFollowedByAsync(string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(RelationshipEndpointUrlsFactory.CreateUserFollowsUrl(userId, accessToken));
+                Uri uri = RelationshipEndpointUrlsFactory.CreateUserFollowedByUrl(accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(InstagramAPIEndpoints.UserFollowsEndpoint, this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -101,7 +130,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.PostAsync(RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, accessToken, relationshipAction), null);
+                Uri uri = RelationshipEndpointUrlsFactory.CreatePOSTRelationshipActionUrl(userId, accessToken, relationshipAction);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.RelationshipEndpoint, userId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.PostAsync(uri, null);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {

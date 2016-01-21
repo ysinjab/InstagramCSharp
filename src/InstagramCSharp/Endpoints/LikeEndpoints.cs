@@ -1,5 +1,6 @@
 ﻿using InstagramCSharp.Exceptions;
 using InstagramCSharp.Factories;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,7 +9,14 @@ namespace InstagramCSharp.Endpoints
 {
     public class LikeEndpoints
     {
-       
+        public string ClientSecret { get; private set; }
+        public bool EnforceSignedRequests { get; private set; }
+        public LikeEndpoints(string clientSecret, bool enforceSignedRequests)
+        {
+            this.ClientSecret = clientSecret;
+            this.EnforceSignedRequests = enforceSignedRequests;
+        }
+
         /// <summary>
         /// Get a list of users who have liked this media.
         /// Required scope: likes
@@ -23,7 +31,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync(LikeEndpointsUrlsFactory.CreateGETLikeUrl(mediaId, accessToken));
+                Uri uri = LikeEndpointsUrlsFactory.CreateGETLikeUrl(mediaId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.LikesEndpoint, mediaId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.GetAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -45,12 +58,13 @@ namespace InstagramCSharp.Endpoints
         ///         A valid access token.
         ///     </para>
         /// </param>
-        public async Task<string> PosLikeAsync(string mediaId, string accessToken)
+        public async Task<string> PostLikeAsync(string mediaId, string accessToken)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var content = BuildFormUrlEncodedContent(accessToken);
-                var response = await httpClient.PostAsync(LikeEndpointsUrlsFactory.CreatePOSTLikeUrl(mediaId), content);
+                var content = BuildFormUrlEncodedContent(accessToken, mediaId);
+                Uri uri = LikeEndpointsUrlsFactory.CreatePOSTLikeUrl(mediaId);
+                var response = await httpClient.PostAsync(uri, content);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,7 +90,12 @@ namespace InstagramCSharp.Endpoints
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync(LikeEndpointsUrlsFactory.CreateDELETELikeUrl(mediaId, accessToken));
+                Uri uri = LikeEndpointsUrlsFactory.CreateDELETELikeUrl(mediaId, accessToken);
+                if (this.EnforceSignedRequests)
+                {
+                    uri = uri.AddParameter("sig", Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.LikesEndpoint, mediaId), this.ClientSecret, uri.Query));
+                }
+                var response = await httpClient.DeleteAsync(uri);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
@@ -88,10 +107,15 @@ namespace InstagramCSharp.Endpoints
                 }
             }
         }
-        private FormUrlEncodedContent BuildFormUrlEncodedContent(string accessToken)
+        private FormUrlEncodedContent BuildFormUrlEncodedContent(string accessToken, string mediaId)
         {
             var postData = new List<KeyValuePair<string, string>>();
             postData.Add(new KeyValuePair<string, string>("access_token", accessToken));
+            if (this.EnforceSignedRequests)
+            {
+                postData.Add(new KeyValuePair<string, string>("sig",
+                    Utilities.GenerateSig(string.Format(InstagramAPIEndpoints.LikesEndpoint, mediaId), this.ClientSecret, postData)));
+            }
             FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
             return content;
         }
