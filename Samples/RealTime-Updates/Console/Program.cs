@@ -10,20 +10,18 @@ namespace InstagramCSharp_ConsoleApp
     {
         static void Main(string[] args)
         {
-			//Create RealTime subscription sample
-		
+			//Create RealTime subscription sample		
 		
             string clientId = "YOUR_CLIENT_ID";
             string clientSecret = "YOUR_CLIENT_SECRET";
             string callbackUrl = "YOUR_CALLBACK_URI";
 
-            InstagramClient instagramClient = new InstagramClient(clientId, clientSecret, null);
+            InstagramClient instagramClient = new InstagramClient(clientId, clientSecret);
 
             try
             {
-                var response = instagramClient.SubscriptionsEndpoints.CreateGeographySubscriptionAsync("YOUR_VERIFY_TOKEN", callbackUrl, 52.521706, 13.365218, 5000, RealTimeAspects.Media).Result;
-
-                var newSubscription = JsonConvert.DeserializeObject<CreatedSubscription>(response);
+                var responseString = instagramClient.SubscriptionsEndpoints.CreateUserSubscriptionAsync("YOUR_VERIFY_TOKEN", callbackUrl, RealTimeAspects.Media).Result;
+                var newSubscription = JsonConvert.DeserializeObject<Envelope<Subscription>>(responseString);
             }
             catch (Exception ex)
             {
